@@ -1,0 +1,6 @@
+* {{#ifeq: {{{2|o}}}|-|<del>}}{{{1}}}: {{#switch: {{lc: {{{2|o}}}}}
+ | o = <font color=darkgreen>OK</font>
+ | x = <font color=red>NG</font>
+ | - = 
+ | #default = ？
+}}{{#ifeq: {{{2|o}}}|-|</del>}}

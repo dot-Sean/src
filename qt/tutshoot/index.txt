@@ -1,0 +1,11 @@
+main.cpp(/^main/): エントリ
+  main.cpp(/GameBoard gb/): メインウィジェット
+
+gamebrd.h(/^class GameBoard/): ゲームボードのクラス定義
+
+gamebrd.cpp(/^GameBoard::GameBoard/): ゲームボードのコンストラクタ
+
+cannon.h(/^class CannonField/): 定義
+
+cannon.cpp(/^CannonField::CannonField/):
+

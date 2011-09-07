@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# If command is not specified, any redirec-tions take effect in the
+# current shell, and the return status is 0.  If there is a
+# redirection error, the return status is 1. (bash(1))
+
+tmpfile=`basename $0`$$.tmp
+exec 10> $tmpfile && {
+  echo Hoge! 1>&10
+  cat -n $tmpfile
+  rm -f $tmpfile
+}

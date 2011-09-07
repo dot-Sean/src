@@ -1,0 +1,11 @@
+#!/usr/bin/python
+
+import sys
+from hamached import HamacheServer, HamacheHandler
+
+import signal
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+httpd = HamacheServer("/", HamacheHandler)
+sys.stderr.write("Listening port: %d\n" % (httpd.getPort(),))
+httpd.run()

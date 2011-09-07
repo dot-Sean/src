@@ -1,0 +1,13 @@
+#!/usr/bin/expect
+set prompt ".*root@.*"
+
+spawn sh -c "LANG=C LC_ALL=C LANGUAGE=C su -"
+expect "Password: "
+send "XXXXXXXX\r"
+expect -re $prompt {
+  send "ls\r"
+  send "exit\r"
+  expect eof
+} "incorrect password" {
+  puts "д└дс"
+}

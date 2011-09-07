@@ -1,0 +1,65 @@
+{{SERVER}}/{{SCRIPT}}
+
+いろいろな include ができる extension です。
+
+<include iframe src="http://www.google.com/" width=100% height=600/>
+
+<table>
+<tr><td>hoge</td><td>fuga</td></tr>
+<tr><td>foo</td><td>bar</td></tr>
+</table>
+
+{{#ifeq:foo|foo|<nowiki/>
+= hoge =
+hello
+|}}{{#ifeq:foo|foo|<nowiki/>
+= fuga =
+hello
+|}}
+
+= foo bar =
+{{#ifeq:||
+|}}
+* foo
+** foo
+* bar
+** bar
+
+{{#ifeq:||
+|}}{{#ifeq:foo|foo|
+* foo
+** foo
+|}}{{#ifeq:foo|foo|
+* bar
+** bar
+|}}
+
+1 + 2 = {{#expr: 1 + 2 }} おー、出た。
+
+http://www.mediawiki.org/wiki/Extension:Parser_function_extensions
+
+続いて Inputbox 拡張。
+
+<inputbox>
+type=create
+preload=Template:TestCategory/Preload
+buttonlabel=果物テストのページを作成
+default=TestCategory/{{#time: Ymd}}
+</inputbox>
+
+http://www.mediawiki.org/wiki/Extension:Inputbox/ja
+
+http://meta.wikimedia.org/wiki/Template:Preload_demo
+
+[[Template:TestCategory]]
+
+[[Template:TestCategory/Preload]]
+
+[[Template:TestCategory/3x]]
+
+テンプレートのテスト: {{TestCategory|果物A=巨峰|果物B=洋ナシ}}
+
+巨峰は洋ナシよりも値段が高い。
+{{TestCategory/3x|巨峰}}
+
+== 見出し ==

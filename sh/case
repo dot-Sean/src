@@ -1,0 +1,14 @@
+#!/bin/sh
+
+case $1 in
+  (hoge*)
+    echo hoge
+    ;;
+  fuga*)
+    echo fuga
+    ;;
+  *)
+    echo other
+    ;;
+esac
+

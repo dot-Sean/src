@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if test -a "$1"
+then
+  cat $* | \
+  while read hoge;
+  do
+    echo d: $hoge
+  done
+fi
+
+cat /etc/passwd | \
+while IFS=":" read -a fields;
+do
+  echo ${fields[0]} - ${fields[2]}.${fields[3]}
+done
+

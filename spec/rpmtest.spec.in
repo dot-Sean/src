@@ -1,0 +1,136 @@
+%define ver __VERSION__
+%define rel __RELEASE__
+%define ser __SERIAL__
+
+%define build_feature 0
+%{expand: %{?_without_feature: %%global build_feature 0}}
+%{expand: %{?_with_feature:    %%global build_feature 1}}
+
+%{?glibc: %define fugaga AAA}
+%{?foo: %define gugege BBB}
+
+Name: rpmtest
+Summary: Test package for rpm
+Version: %ver
+Release: %rel
+Serial: %ser
+Source: %{name}-%{ver}.tar.gz
+#NoSource: 0
+BuildRoot: /var/tmp/%{name}-root/
+# /usr/share/doc/packages/rpm-__RPMVER__/GROUPS(1):
+Group: Documentation
+License: GPL
+BuildArch: noarch
+Prefix: %{_prefix}
+
+%description
+This package is a test for rpm specification.
+
+%package devel
+Summary: Development package for %{name}
+Group: Development/Libraries
+Requires: %{name} = %{version}
+
+%description devel
+test-devel
+
+%prep
+pwd
+%setup -q
+echo d: %{fugaga}, %{gugege}
+echo d1: %{_arch}
+echo d2: %{build_feature}
+
+%build
+pwd
+
+%install
+rm -fr $RPM_BUILD_ROOT
+install -d -m 755 $RPM_BUILD_ROOT/%{_prefix}/share/rpmtest/
+install -m 644 only_in_%{ver} $RPM_BUILD_ROOT/%{_datadir}/rpmtest/
+echo common is %{name}-%{ver}-%{rel} > $RPM_BUILD_ROOT/%{_datadir}/rpmtest/common
+
+%pre
+echo ---------------------------------------------------------------------- >&2
+echo "%{name}-%{ver}: %pre \$* -> $*" >&2
+ls -l %{_prefix}/share/rpmtest >&2
+if [ -r %{_prefix}/share/rpmtest/common ]
+then
+  cat %{_prefix}/share/rpmtest/common >&2
+fi
+true
+
+%post
+echo ---------------------------------------------------------------------- >&2
+echo "%{name}-%{ver}: %post \$* -> $*" >&2
+ls -l %{_prefix}/share/rpmtest >&2
+if [ -r %{_prefix}/share/rpmtest/common ]
+then
+  cat %{_prefix}/share/rpmtest/common >&2
+fi
+true
+
+%preun
+echo ---------------------------------------------------------------------- >&2
+echo "%{name}-%{ver}: %preun \$* -> $*" >&2
+ls -l %{_prefix}/share/rpmtest >&2
+if [ -r %{_prefix}/share/rpmtest/common ]
+then
+  cat %{_prefix}/share/rpmtest/common >&2
+fi
+true
+
+%postun
+echo ---------------------------------------------------------------------- >&2
+echo "%{name}-%{ver}: %postun \$* -> $*" >&2
+ls -l %{_prefix}/share/rpmtest >&2
+if [ -r %{_prefix}/share/rpmtest/common ]
+then
+  cat %{_prefix}/share/rpmtest/common >&2
+fi
+true
+
+%trigger -- rpmtest
+echo ---------------------------------------------------------------------- >&2
+echo "%{name}-%{ver}: %trigger \$* -> $*" >&2
+ls -l %{_prefix}/share/rpmtest >&2
+if [ -r %{_prefix}/share/rpmtest/common ]
+then
+  cat %{_prefix}/share/rpmtest/common >&2
+fi
+true
+
+%triggerin -- rpmtest
+echo ---------------------------------------------------------------------- >&2
+echo "%{name}-%{ver}: %triggerin \$* -> $*" >&2
+ls -l %{_prefix}/share/rpmtest >&2
+if [ -r %{_prefix}/share/rpmtest/common ]
+then
+  cat %{_prefix}/share/rpmtest/common >&2
+fi
+true
+
+%triggerun -- rpmtest
+echo ---------------------------------------------------------------------- >&2
+echo "%{name}-%{ver}: %triggerun \$* -> $*" >&2
+ls -l %{_prefix}/share/rpmtest >&2
+if [ -r %{_prefix}/share/rpmtest/common ]
+then
+  cat %{_prefix}/share/rpmtest/common >&2
+fi
+true
+
+%triggerpostun -- rpmtest
+echo ---------------------------------------------------------------------- >&2
+echo "%{name}-%{ver}: %triggerpostun \$* -> $*" >&2
+ls -l %{_prefix}/share/rpmtest >&2
+if [ -r %{_prefix}/share/rpmtest/common ]
+then
+  cat %{_prefix}/share/rpmtest/common >&2
+fi
+true
+
+%files
+%defattr(-,root,root)
+%{_prefix}/share/rpmtest/common
+%{_prefix}/share/rpmtest/only_in_%{ver}

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+function usage {
+  if [ ! -z "$*" ]
+  then
+    echo Error: $*
+  fi
+  echo Usage:
+}
+
+while getopts ab:c arg
+do
+  case $arg in
+    a)
+      echo A
+      ;;
+    b)
+      echo B: $OPTARG
+      ;;
+    c)
+      echo C
+      ;;
+    ?)
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+shift `expr $OPTIND - 1`
+echo Rest: $*

@@ -1,0 +1,24 @@
+#!/usr/bin/env perl
+
+$from = "knaka\@ayutaya.com";
+#$to = "auknaka\@ezmail.ne.jp";
+#$to = "knaka\@turbolinux.co.jp";
+$subject = `LANG=ja_JP.eucJP LC_ALL=ja_JP.eucJP date '+！%m/%d(%a)' | nkf -EM | sed -e 's/= /=/g'`;
+chop($subject);
+$charset = "iso-2022-jp";
+
+print <<EOF;
+From: $from
+Subject: $subject
+MIME-Version: 1.0
+Content-Type: text/plain; charset=$charset
+
+EOF
+
+# To: $to
+# Date: Fri, 20 Dec 2002 10:29:33 +0900 (JST)
+
+open(CONV, "| nkf -j");
+print CONV "ほげほげほげほ〜\n";
+print CONV "ふがふがふ〜\n";
+close(CONV);

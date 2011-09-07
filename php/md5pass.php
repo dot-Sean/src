@@ -1,0 +1,3 @@
+<?
+echo crypt("plain", "aa");
+?>

@@ -1,0 +1,1 @@
+KERNEL=="foo[0-9]*", GROUP="root", MODE="0666"

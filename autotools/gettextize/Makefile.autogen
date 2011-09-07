@@ -1,0 +1,44 @@
+all:
+	@mkdir -p /tmp/attest/
+	\cp -f orig/Makefile.am Makefile.am
+	\cp -f orig/configure.in configure.in
+	@\ls -R > /tmp/attest/cp0
+	@echo ----------------
+	libtoolize
+	@\ls -R > /tmp/attest/cp0.3
+	@diff -uNr /tmp/attest/cp0 /tmp/attest/cp0.3 || true
+	@echo ----------------
+	gettextize -f --intl
+	\cp -f po/Makevars.template po/Makevars
+	\cp -f /usr/share/gettext/gettext.h .
+	\find . -name "*.c" >> po/POTFILES.in
+	echo "ja" > po/LINGUAS
+	\cp -f orig/ja.po po/
+	@\ls -R > /tmp/attest/cp0.5
+	@diff -uNr /tmp/attest/cp0.3 /tmp/attest/cp0.5 || true
+	@echo ----------------
+	rpm -qf `which aclocal`
+	aclocal
+	@\ls -R > /tmp/attest/cp1
+	@diff -uNr /tmp/attest/cp0.5 /tmp/attest/cp1 || true
+	@echo ----------------
+	# config.h.in is required for automake
+	rpm -qf `which autoheader`
+	autoheader
+	@\ls -R > /tmp/attest/cp2
+	@diff -uNr /tmp/attest/cp1 /tmp/attest/cp2 || true
+	@echo ----------------
+	rpm -qf `which automake`
+	touch NEWS README AUTHORS ChangeLog
+	automake --add-missing
+	@\ls -R > /tmp/attest/cp3
+	@diff -uNr /tmp/attest/cp2 /tmp/attest/cp3 || true
+	@echo ----------------
+	rpm -qf `which autoconf`
+	autoconf
+	@\ls -R > /tmp/attest/cp4
+	@diff -uNr /tmp/attest/cp3 /tmp/attest/cp4 || true
+	@echo ----------------
+	./configure
+	@\ls -R > /tmp/attest/cp5
+	@diff -uNr /tmp/attest/cp4 /tmp/attest/cp5 || true

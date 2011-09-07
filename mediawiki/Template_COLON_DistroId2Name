@@ -1,0 +1,71 @@
+{{#switch: {{lc: {{{1}}} }}
+ | tl2008c
+ | tl12d
+ | tl12c
+ | mc
+ | magny-cours
+ | magnycours
+ | tlc2008 = Turbolinux Client 2008 (Magny-Cours)
+ | tlas3 x64
+ | atlas x64
+ | atlas64
+ | tlas3x64
+ | tlas3_x64 = Turbolinux Appliance Server 3 for X64 (Atlas64)
+ | atlas
+ | tlas3 = Turbolinux Appliance Server 3 (Atlas)
+ | tl11s x64
+ | musasabi x64
+ | musasabi64
+ | tl11s_x64 = Turbolinux 11 Server for X64 (Musasabi64)
+ | musasabi
+ | tl11s = Turbolinux 11 Server (Musasabi)
+ | fuji
+ | tl11d = Turbolinux 11 Desktop (Fuji)
+ | tl11di
+ | tl11d_intl = Turbolinux 11 Desktop (Fuji) International
+ | tl11db
+ | tl11d_basic = Turbolinux 11 Desktop (Fuji) Basic
+ | tl11dt
+ | tl11d_trial = Turbolinux 11 Desktop (Fuji) Trial
+ | wizpy = Wizpy
+ | wizpynol
+ | wizpy_no_license = Wizpy (No License)
+ | wizpyexl
+ | wizpy_expire_license = Wizpy (Expired License)
+ | wizpy_in
+ | wizpy_intl = Wizpy (International)
+ | wizpynol_in
+ | wizpy_intl_no_license = Wizpy (International - No License)
+ | wizpyexl_in
+ | wizpy_intl_no_expire_license = Wizpy (International - Expired License)
+ | uran2
+ | tlaps2
+ | tlas2 = Turbolinux Appliance Server 2 (Uran2)
+ | tl10sx64
+ | tl10s x64
+ | santoka
+ | tl10s_x64 = Turbolinux 10 Server for X64 (Santoka)
+ | tl10s_x64_turboplus = Turbolinux 10 Server for X64 (Santoka) with TurboPlus
+ | tl10s_x64_turbopkg = Turbolinux 10 Server for X64 (Santoka) with TurboPkg
+ | celica
+ | tl10s = Turbolinux 10 Server (Celica)
+ | tl10s_turboplus = Turbolinux 10 Server (Celica) with TurboPlus
+ | tl10s_turbopkg = Turbolinux 10 Server (Celica) with TurboPkg
+ | suzuka
+ | tl10d = Turbolinux 10 Desktop (Suzuka)
+ | tlashe
+ | uran
+ | tlaps10he
+ | tlas1he = Turbolinux Appliance Server Hosting Edition (Uran)
+ | tlaswe
+ | atom
+ | tlaps10we
+ | tlas1we = Turbolinux Appliance Server Workgroup Edition / MMQUBE3 (Atom)
+ | tls8
+ | viper
+ | tl8s = Turbolinux 8 Server (Viper)
+ | tld8
+ | silverstone
+ | tl8d = Turbolinux 8 Desktop (SilverStone)
+ | #default = {{{1}}}
+}}

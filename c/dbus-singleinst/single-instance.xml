@@ -1,0 +1,7 @@
+<node name="/">
+  <interface name="com.ayutaya.SingleInstanceInterface">
+    <method name="Create">
+      <arg type="as"/>
+    </method>
+  </interface>
+</node>

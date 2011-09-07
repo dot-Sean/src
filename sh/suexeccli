@@ -1,0 +1,41 @@
+#!/bin/sh
+
+tempdir=`mktemp -d /tmp/testXXXXXX`
+origdir=`dirname ${BASH_SOURCE[0]} 2> /dev/null`
+if test -z "$origdir"
+then
+  origdir=`dirname $0`
+fi
+
+cat <<EOF > $tempdir/test0.sh
+#!/bin/sh
+if test -n "$DISPLAY"
+then
+  kdesu $tempdir/test1.sh
+else
+  su -c $tempdir/test1.sh
+fi
+EOF
+chmod 755 $tempdir/test0.sh
+
+cat <<EOF > $tempdir/test1.sh
+#!/bin/sh
+rpm -Fvh $origdir/turbo/RPMS/turboplus-1.*.rpm
+if test -n "$DISPLAY"
+then
+  /usr/bin/konsole  --nohist --nomenubar --notoolbar --noscrollbar --noframe -e $tempdir/test2.sh
+else
+  $tempdir/test2.sh
+fi
+EOF
+chmod 755 $tempdir/test1.sh
+
+cat <<EOF > $tempdir/test2.sh
+#!/bin/sh
+/usr/sbin/turbo+ --cui | cat 
+EOF
+chmod 755 $tempdir/test2.sh
+
+$tempdir/test0.sh
+
+rm -fr $tempdir

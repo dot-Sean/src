@@ -1,0 +1,97 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+# --------------------------------------------------------------------
+# Prep
+
+AC_PREREQ(2.59)
+AC_INIT(hello, 1.0, knaka@ayutaya.com)
+AC_CONFIG_SRCDIR([lib/hello.h])
+AC_CONFIG_HEADER([config.h])
+
+AC_GNU_SOURCE
+
+RELEASE=1
+AC_SUBST(RELEASE)
+
+LIBHELLO_MAJOR_VERSION=1
+LIBHELLO_MINOR_VERSION=0
+LIBHELLO_MICRO_VERSION=0
+
+# --------------------------------------------------------------------
+# Checks for programs.
+
+AC_PROG_CC
+
+# --------------------------------------------------------------------
+# Checks for libraries.
+# FIXME: Replace `main' with a function in `-lfoo':
+
+# AC_CHECK_LIB([foo], [foofunc])
+
+# --------------------------------------------------------------------
+# Checks for header files.
+
+# AC_CHECK_HEADERS(stdio.h)
+
+# --------------------------------------------------------------------
+# Checks for typedefs, structures, and compiler characteristics.
+
+# --------------------------------------------------------------------
+# Checks for library functions.
+
+# --------------------------------------------------------------------
+# Others
+
+LIBHELLO_MICRO_VERSION_SUFFIX=
+
+LIBHELLO_VERSION=$LIBHELLO_MAJOR_VERSION
+LIBHELLO_VERSION=$LIBHELLO_VERSION.$LIBHELLO_MINOR_VERSION
+LIBHELLO_VERSION=$LIBHELLO_VERSION.$LIBHELLO_MICRO_VERSION
+LIBHELLO_VERSION=$LIBHELLO_VERSION$LIBHELLO_MICRO_VERSION_SUFFIX
+AC_SUBST(LIBHELLO_VERSION)
+
+LIBHELLO_VERSION_INFO=`expr $LIBHELLO_MAJOR_VERSION + $LIBHELLO_MINOR_VERSION`
+LIBHELLO_VERSION_INFO=$LIBHELLO_VERSION_INFO:$LIBHELLO_MICRO_VERSION
+LIBHELLO_VERSION_INFO=$LIBHELLO_VERSION_INFO:$LIBHELLO_MINOR_VERSION
+AC_SUBST(LIBHELLO_VERSION_INFO)
+
+# --------------------------------------------------------------------
+# Automake
+
+AM_INIT_AUTOMAKE($PACKAGE_NAME, $PACKAGE_VERSION)
+AM_PROG_CC_C_O
+AM_PROG_LIBTOOL
+AM_GNU_GETTEXT
+#AM_PATH_GLIB_2_0
+#AM_PATH_XML2
+AM_PATH_PYTHON
+
+PYTHON_INCLUDES=
+if test "$PYTHON_VERSION" != ""
+then
+  if test -r $prefix/include/python$PYTHON_VERSION/Python.h
+  then
+    PYTHON_INCLUDES='$(prefix)/include/python$(PYTHON_VERSION)'
+  elif test -r /usr/include/python$PYTHON_VERSION/Python.h
+  then
+    PYTHON_INCLUDES=/usr/include/python$PYTHON_VERSION
+  else
+    echo Could not find python$PYTHON_VERSION/Python.h
+  fi
+fi
+AC_SUBST(PYTHON_INCLUDES)
+
+# for pkg-config (.pc)
+# PKG_CHECK_MODULES(GNOMEUI, libgnomeui-2.0)
+
+# --------------------------------------------------------------------
+# Output
+
+AC_CONFIG_FILES([
+ Makefile
+ lib/Makefile
+ python/Makefile
+ tools/Makefile
+])
+AC_OUTPUT

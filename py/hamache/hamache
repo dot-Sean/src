@@ -1,0 +1,58 @@
+#!/usr/bin/python
+
+# hamache [ --root=/ ] /home/knaka/bin/cgi-bin/edit ~/test.txt
+# hamache --root=/home/knaka/bin/ /cgi-bin/edit ~/test.txt
+# hamache --rootauth --root=/usr/lib/hamache/edit /cgi-bin/edit /etc/fstab
+
+import sys
+import os
+import hamached
+from distutils.fancy_getopt import FancyGetopt
+
+class App:
+  def show_help(self):
+    self.parser.print_help("Usage: %s [options] path [args ...]" % \
+     (self.my_name,) )
+  def __init__(self, my_name, args):
+    self.root = "/"
+    self.help = 0
+    self.readonly = 0
+    self.my_name = my_name
+    self.args = args
+  def run(self):
+    self.parser = FancyGetopt (
+     (
+      ("root=", "r", "Root directory"),
+      ("help", "h", "Show this help"),
+      ("readonly", "R", "Set readonly"),
+     )
+    )
+    args = self.parser.getopt(self.args, self)
+    if len(args) == 0:
+      self.show_help()
+      sys.exit(1)
+    if self.help:
+      self.show_help()
+      sys.exit(0)
+    httpd = hamached.HamacheServer(self.root, hamached.HamacheHandler)
+    path = httpd.putLocal(args)
+    if path:
+      pid = os.fork()
+      if pid < 0:
+        raise "Oops"
+      elif pid == 0:
+        httpd.run()
+        sys.exit(0)
+      cmd = "mozilla -remote 'openURL(%s,new-window)'"
+      imm_ret = 1
+      os.system(cmd % (path,))
+      if self.readonly or not imm_ret:
+        kill(pid)
+    else:
+      raise "Oops"
+
+if __name__ == "__main__":
+  app = App(sys.argv[0], sys.argv[1:])
+  app.run()
+
+  

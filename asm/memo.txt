@@ -1,0 +1,14 @@
+レジスタ概要
+  A: Accumulator
+  B: Base
+    相対アドレッシングのベースを表すのに多く使われる
+    PIC では、EBX がベースになる
+  C: Counter
+    ループのカウンタに多く用いられる
+  D: Data
+    アキュミュレータの対として用いられる
+  SI: Source Index, DI: Destination Index
+    メモリコピーなどで、S と D を表すのに用いられることが多い
+  BP: Base Pointer, SP: Stack Pointer
+  IP: Instruction Pointer
+  CS: Code Segment, DS: Data, ES: Extra, SS: Stack

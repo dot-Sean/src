@@ -1,0 +1,501 @@
+#!/usr/bin/python
+#
+# $Id: privapache,v 1.23 2005/03/10 12:20:39 knaka Exp $
+#
+# (C) 2005-2005 Turbolinux, Kiichiro NAKA <knaka@turbolinux.co.jp>
+#
+# This software may be freely redistributed under the terms of the GNU
+# public license.
+#
+# You should have received a copy of the GNU Library Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+# ........
+#
+# Usage:
+#   privapache [OPTION] FILE(S)
+#   privapache [OPTION] DIRECTORY
+#
+# + /var/tmp/privdir-XXXXXX
+# `-+-o httpd.conf
+#   +-o kick.html
+#   +-o auth-$sid.html
+#   `-+ html
+#     `-+ user
+# 
+# 1. file:///var/tmp/privdir-XXXXXX/kick.html refreshes to "2"
+# 2. http://127.0.0.1:$port/auth-$sid.html sets cookie "sid-$sid" and
+#    refreshes to "3"
+# 3. http://127.0.0.1:$port/user/
+
+import os
+import sys
+import whrandom
+import string
+import tempfile
+import pwd
+import grp
+import getopt
+import shutil
+import socket
+import signal
+import time
+import glob
+
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+public_service = 0
+specified_ports = []
+cand_httpd_bins = (
+ "/usr/sbin/httpd",
+ "/usr/sbin/apache",
+)
+log_file = None
+cand_httpd_confs = (
+ "/etc/apache/httpd.conf",
+ "/etc/httpd/httpd.conf",
+ "/etc/httpd/conf/httpd.conf",
+)
+mzpath = ""
+enable_cgi = 0
+pwfile = ""
+pwhash = ""
+saved_conf = None
+
+noincludes = [ "ssl.conf ", ]
+
+(opts, args) = getopt.getopt(sys.argv[1:],
+ "cCfh:l:m:n:pP:s:",
+ [
+  "cgi",
+  "conffile=",
+  "pwfile=",
+  "httpd=",
+  "log=",
+  "mzpath=",
+  "noinclude=",
+  "public",
+  "port=",
+  "saveconf=",
+ ] )
+
+for (key, val,) in opts:
+  if None:
+    pass
+  elif key == "-c" or key == "--cgi":
+    enable_cgi = 1
+  elif key == "-C" or key == "--conffile":
+    cand_httpd_confs = (val,)
+  # Password hashes which PHP supports are valid
+  # http://www.php.net/manual/en/function.crypt.php
+  elif key == "-f" or key == "--pwfile":
+    pwfile = val
+  elif key == "-h" or key == "--httpd":
+    cand_httpd_bins = (val,)
+  elif key == "-l" or key == "--log":
+    log_file = val
+  elif key == "-m" or key == "--mzpath":
+    mzpath = val
+  elif key == "-n" or key == "--noinclude":
+    noincludes.append(val)
+  elif key == "-p" or key == "--public":
+    public_service = 1
+  elif key == "-P" or key == "--port":
+    fields = val.split("-", 1)
+    if len(fields) == 1:
+      specified_ports.append(int(fields[0]))
+    elif len(fields) == 2:
+      specified_ports = \
+       specified_ports + range(int(fields[0]), int(fields[1]))
+    else:
+      raise "Invalid port(s)"
+  elif key == "-s" or key == "--saveconf":
+    saved_conf = val
+  else:
+    raise "Invalid option %s" % (key,)
+
+if pwfile:
+  pwhash = open(pwfile).readline()
+  pwhash = pwhash.strip()
+  public_service = 0
+
+if 0:
+  hashedpw = pwd.getpwuid(os.getuid())
+  if hashedpw == "x" or hashedpw == "*":
+    plainpw = getpass.getpass()
+    crypt.crypt(plainpw, salt) == hashedpw
+
+content_files = []
+content_dir = None
+for arg in args:
+  if os.path.isfile(arg):
+    if content_dir:
+      raise "Specify a directory or file(s)"
+    content_files.append(os.path.abspath(arg))
+  elif os.path.isdir(arg):
+    if content_dir:
+      raise "Multiple directories specified"
+    if len(content_files) > 0:
+      raise "Specify a directory or file(s)"
+    content_dir = os.path.abspath(arg)
+  else:
+    raise "%s is not file nor direcotory" % (arg,)
+
+host = socket.gethostname()
+
+def get_used_ports():
+  ret = []
+  #for line in open("/proc/net/tcp").readlines():
+  #  used_port_hex_str = line[15:15 + 4]
+  #  try:
+  #    used_port = string.atoi(used_port_hex_str, 16)
+  #    ret.append(used_port)
+  #  except ValueError:
+  #    continue
+  for line in os.popen("LANG=C LC_ALL=C LANGUAGE=C "
+   "netstat --numeric --listen --tcp" ).readlines():
+    line = line.strip()
+    fields = line.split()
+    if fields[0] == "tcp":
+      host_port = fields[3]
+      (host, port,) = host_port.split(":", 1)
+      ret.append(int(port))
+  return ret
+
+used_ports = get_used_ports()
+
+#     0 -  1023: well-known
+#  1024 - 49151: registered
+# 49152 - 65535: dynamic/private
+
+if len(specified_ports) > 0:
+  cand_ports = specified_ports
+else:
+  cand_ports = range(49152, 65535)
+
+port = -1
+for port in cand_ports:
+  if not port in used_ports:
+    break
+else:
+  raise "No port available"
+
+httpd_bin = ""
+for cmd in cand_httpd_bins:
+  if os.access(cmd, os.X_OK):
+    httpd_bin = cmd
+    break
+else:
+  raise "No httpd found"
+
+random_initialized = 0
+
+def get_uniq_id():
+  global random_initialized
+  ret = ""
+  if not random_initialized:
+    whrandom.seed(0, 0, 0)
+    random_initialized = 1
+  for i in range(32):
+    ret = "%s%s" % (ret, chr(whrandom.randint(ord("a"), ord("z"))),)
+  return ret
+
+sid = get_uniq_id()
+usid = get_uniq_id()
+
+try:
+  privdir = tempfile.mktemp("", "/var/tmp/privdir-")
+except TypeError:
+  privdir = tempfile.mktemp("")
+if not log_file:
+  log_file = "%s/privapache.log" % (privdir,)
+httpd_conf = "%s/httpd.conf" % (privdir,)
+html_dir = "%s/html" % (privdir,)
+if pwhash:
+  index_file = "%s/index.php" % (html_dir,)
+else:
+  index_file = "%s/index.html" % (html_dir,)
+if not public_service:
+  kick_html = "%s/kick.html" % (privdir,)
+  auth_html = "%s/auth-%s.html" % (html_dir, sid,)
+user_dir = "%s/user" % (html_dir,)
+pidfile = "%s/httpd.pid" % (privdir,)
+
+reppairs = (
+ ("PidFile", pidfile,),
+ ("Listen", "%d" % (port,),),
+ ("Port", "%d" % (port,)),
+ ("User", pwd.getpwuid(os.getuid())[0],),
+ ("Group", grp.getgrgid(os.getgid())[0],),
+ ("DocumentRoot", html_dir,),
+ ("ErrorLog", ("%s/httpd_error.log" % (privdir,)),),
+ ("CustomLog", ("%s/httpd_custom.log combined" % (privdir,)),),
+ ("Scriptsock", ("%s/httpd.cgid" % (privdir,)),),
+ ("DirectoryIndex", "index.html index.htm index.php",),
+ ("AddDefaultCharset", None,),
+)
+
+os.makedirs(privdir, 0700)
+if log_file == "-":
+  log = sys.stderr
+else:
+  log = open(log_file, "wc", 0600)
+log.write("Log opned: %s\n" % (log_file,)); log.flush()
+log.write("port: %d\n" % (port,)); log.flush()
+start_basename = ""
+os.makedirs(html_dir, 0755)
+if content_dir:
+  os.symlink(content_dir, user_dir)
+else:
+  os.makedirs(user_dir, 0755)
+  for file in content_files:
+    basename = os.path.basename(file)
+    if not start_basename:
+      start_basename = basename
+    os.symlink(file, "%s/%s" % (user_dir, basename,))
+
+if not public_service:
+  requires_auth = """
+  Deny from all
+  Allow from env=auth-%s
+""" % (sid,)
+else:
+  requires_auth = """
+  Allow from all
+"""
+
+serverroot = ""
+
+def convertConf(input, output):
+  global servertoot
+  for line in input.readlines():
+    line = line.strip()
+    fields = line.split(None, 1)
+    if len(fields) >= 2:
+      curdir = fields[0].strip()
+      if curdir == "ServerRoot":
+        serverroot = fields[1].strip()
+        serverroot = serverroot.replace('"', "")
+      if curdir == "Include":
+        files = fields[1]
+        for wc in files.split():
+          for file in glob.glob("%s/%s" % (serverroot, wc,)):
+            if os.path.basename(file) in noincludes:
+              continue
+            input_inc = open(file)
+            output.write("# begin include - %s\n" % (file,))
+            convertConf(input_inc, output)
+            output.write("# end include - %s\n" % (file,))
+            input_inc.close()
+            line = ""
+      for (dir, val,) in reppairs:
+        if dir == curdir:
+          if val == None:
+            line = "# %s" % (line,)
+          else:
+            line = "%s %s" % (fields[0], val)
+    output.write("%s\n" % (line,))
+
+output = open(httpd_conf, "w")
+
+for file in cand_httpd_confs:
+  try:
+    input = open(file)
+  except IOError:
+    pass
+
+convertConf(input, output)
+
+input.close()
+
+if not public_service:
+  output.write("""
+  SetEnvIf Cookie "sid-%s" auth-%s
+""" % (sid, sid,) )
+
+if mzpath:
+  output.write("""
+#<IfModule mod_env.c>
+  SetEnv usid %s
+#</IfModule>
+  SetEnvIf Cookie "usid-%s" uauth-%s
+""" % (usid, usid, usid,) )
+
+if enable_cgi:
+  output.write("""
+AddHandler cgi-script .cgi
+""" );
+
+output.write("""
+# Main Directory
+<Directory "%s">
+  Options FollowSymLinks ExecCGI
+  AllowOverride None
+  Order Deny,Allow
+  Allow from all
+  Header set Pragma no-cache
+  Header set Cache-Control no-cache
+  Header set Expires "Thu, 01 Jan 1970 00:00:00 GMT"
+#<IfModule !mod_php4.c>
+#<Files "*.php">
+#  hoge
+#  Deny from all
+#</Files>
+#</IfModule>
+</Directory>
+""" % (html_dir,) )
+
+output.write("""
+# User directory
+<Directory "%s">
+  Options ExecCGI FollowSymLinks Includes Indexes MultiViews
+  AllowOverride All
+  Order Deny,Allow
+  %s
+</Directory>
+""" % (user_dir, requires_auth,) )
+
+if mzpath:
+  output.write("""
+<Directory "%s/%s">
+  Deny from all
+  Allow from env=uauth-%s
+</Directory>
+""" % (user_dir, mzpath, usid,))
+
+output.close()
+
+if saved_conf:
+  os.system("cp -f %s %s" % (httpd_conf, saved_conf))
+
+output = open(index_file, "w")
+if pwhash:
+  output.write("""<?
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+$passwd = $_POST["passwd"];
+if ($passwd && crypt($passwd, '%s') == '%s') {
+?>
+<html>
+<head>
+  <meta http-equiv="Set-Cookie" content="sid-%s">
+  <meta http-equiv='Refresh'
+   content='0;url=/user/%s'>
+</head>
+</html>
+<?
+  exit();
+}
+?>
+<html>
+<body>
+<form method=post action=index.php>
+  Password <input type=password name=passwd>
+  <input type=submit value="Login">
+</form>
+</body>
+</html>
+""" % (pwhash, pwhash, sid, start_basename,) )
+elif public_service:
+  output.write("""
+<html>
+<head>
+  <meta http-equiv='Refresh'
+   content='0;url=user/%s'>
+</head>
+<body>
+</body>
+</html>
+""" % (start_basename,) )
+else:
+  output.write("")
+output.close()
+
+if not public_service:
+  output = open(kick_html, "w")
+  output.write("""
+<html>
+<head>
+  <meta http-equiv='Refresh'
+   content='0;url=http://127.0.0.1:%d/auth-%s.html'>
+</head>
+<body>
+</body>
+</html>
+""" % (port, sid,) )
+  output.close()
+
+if not public_service:
+  output = open(auth_html, "w")
+  output.write("""
+<html>
+<head>
+  <meta http-equiv="Set-Cookie" content="sid-%s">
+  <meta http-equiv='Refresh'
+   content='0;url=http://127.0.0.1:%d/user/%s'>
+</head>
+<body>
+</body>
+</html>
+""" % (sid, port, start_basename,) )
+  output.close()
+
+# "httpd -X" leaks semaphores when it finishes.
+cmd = "%s -f %s" % (httpd_bin, httpd_conf,)
+
+if public_service:
+  print "Access to http://%s:%d/user/%s" % (host, port, start_basename,)
+else:
+  if pwfile:
+    print "Access to http://%s:%d/" % (host, port,)
+  print "Access to file://%s" % (kick_html,)
+
+interrupted = 0
+pid = -1
+
+def handler(signum, * args):
+  if signum == signal.SIGINT or signum == signal.SIGTERM:
+    try:
+      global interrupted
+      interrupted = 1
+      global pid
+      if pid >= 0:
+        os.kill(pid, signal.SIGTERM)
+    except OSError:
+      pass
+
+#import pdb
+#pdb.set_trace()
+
+signal.signal(signal.SIGINT, handler)
+signal.signal(signal.SIGTERM, handler)
+
+return_code = os.system(cmd)
+rc = (return_code >> 8) & 0x0F
+if rc != 0:
+  log.write("httpd error\n"); log.flush()
+  os.system("tail %s/httpd_error.log" % (privdir,))
+else:
+  try:
+    # Another way to find them?
+    while not os.path.exists(pidfile) and not interrupted:
+      time.sleep(0.1)
+    pid = int(open(pidfile).readline())
+    log.write("pid: %d\n" % (pid,)); log.flush()
+    # Server processes are not children.
+    #(pid, status,) = os.waitpid(pid, 0)
+    while os.path.exists("/proc/%d" % (pid,)):
+      time.sleep(1.0)
+  except IOError:
+    pass
+
+shutil.rmtree(privdir)
+
+if log_file != "-":
+  log.close()
+
+sys.exit(rc)

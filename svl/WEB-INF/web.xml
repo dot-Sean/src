@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<web-app version="2.5"
+   xmlns="http://java.sun.com/xml/ns/javaee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+  <description>Desc: Servlet Examples</description>
+  <display-name>Disp: Servlet Examples</display-name>
+  <!-- Define servlets that are included in the example application -->
+
+  <context-param>
+    <param-name>ServletExamples</param-name>
+    <param-value>sevletexamples</param-value>
+  </context-param>
+
+  <!--
+  <servlet>
+    <servlet-name>WelcomeExample</servlet-name>
+    <servlet-class>WelcomeExample</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <url-pattern>/</url-pattern>
+    <servlet-name>WelcomeExample</servlet-name>
+  </servlet-mapping>
+  -->
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error-404.html</location>
+  </error-page>
+
+  <servlet>
+    <servlet-name>HelloWorldExample</servlet-name>
+    <servlet-class>HelloWorldExample</servlet-class>
+    <init-param>
+      <param-name>message</param-name>
+      <param-value>Good Bye!</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HelloWorldExample</servlet-name>
+    <url-pattern>/HelloWorldExample</url-pattern>
+  </servlet-mapping>
+
+  <filter>
+    <filter-name>TestFilter</filter-name>
+    <filter-class>TestFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>TestFilter</filter-name>
+    <url-pattern>/HelloWorldExample</url-pattern>
+  </filter-mapping>
+
+  <servlet>
+    <servlet-name>FormTest</servlet-name>
+    <servlet-class>com.ayutaya.FormTest</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FormTest</servlet-name>
+    <url-pattern>/FormTest</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ExceptionTest</servlet-name>
+    <servlet-class>ExceptionTest</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ExceptionTest</servlet-name>
+    <url-pattern>/ExceptionTest</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SynchronizedTest</servlet-name>
+    <servlet-class>SynchronizedTest</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SynchronizedTest</servlet-name>
+    <url-pattern>/SynchronizedTest</url-pattern>
+  </servlet-mapping>
+
+  <!-- Struts -->
+
+  <servlet>
+    <servlet-name>action</servlet-name>
+    <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+    <init-param>
+      <param-name>config</param-name>
+      <param-value>/WEB-INF/struts-config.xml</param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>action</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+
+  <jsp-config>
+    <taglib>
+      <taglib-uri>custom</taglib-uri>
+      <taglib-location>/WEB-INF/tld/custom.tld</taglib-location>
+    </taglib>
+
+    <!-- Struts -->
+    <taglib>
+      <taglib-uri>/tags/struts-bean</taglib-uri>
+      <taglib-location>/WEB-INF/tld/struts/struts-bean.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>/tags/struts-html</taglib-uri>
+      <taglib-location>/WEB-INF/tld/struts/struts-html.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>/tags/struts-nested</taglib-uri>
+      <taglib-location>/WEB-INF/tld/struts/struts-nested.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>/tags/struts-logic</taglib-uri>
+      <taglib-location>/WEB-INF/tld/struts/struts-logic.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>/tags/struts-tiles</taglib-uri>
+      <taglib-location>/WEB-INF/tld/struts/struts-tiles.tld</taglib-location>
+    </taglib>
+
+  </jsp-config>
+
+</web-app>

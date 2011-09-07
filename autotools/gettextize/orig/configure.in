@@ -1,0 +1,29 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ(2.59)
+AC_INIT(mytest, 1.0, knaka@autaya.com)
+AC_CONFIG_SRCDIR([mytest.c])
+AC_CONFIG_HEADER([config.h])
+
+# Checks for programs.
+AC_PROG_CC
+
+# Checks for libraries.
+
+# Checks for header files.
+
+# Checks for typedefs, structures, and compiler characteristics.
+
+# Checks for library functions.
+
+# Others
+
+# Automake
+AM_INIT_AUTOMAKE($PACKAGE_NAME, $PACKAGE_VERSION)
+AC_PROG_LIBTOOL
+AM_GNU_GETTEXT
+
+# Output
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT

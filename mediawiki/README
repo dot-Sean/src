@@ -1,0 +1,54 @@
+MediaWiki_COLON_CheckShhetEx-form の設定は、Extension:SpecialForm - MediaWiki <http://www.mediawiki.org/wiki/Extension:SpecialForm> のもの。うわ、SQL injection の警告がついてる。
+
+[knaka@mercury extensions]$ pwd
+/var/www/html/mediawiki-1.13.0/extensions
+[knaka@mercury extensions]$ ls -ltr
+total 80
+-rw-r--r-- 1 root  root   2425 Jan 12  2007 debugHooks.php
+-rw-r--r-- 1 root  root  20293 Sep 29  2007 accesscontrol.php
+drw-r--r-- 2 root  root   4096 Mar  3  2008 Lockdown/
+-rw-r--r-- 1 plane cdrom   583 Mar 21  2008 README
+drwxrwxr-x 3 root  root   4096 Sep  3 15:37 ParserFunctions/
+drwxrwxr-x 3 root  root   4096 Sep  3 15:51 inputbox/
+drwxr-xr-x 2 root  root   4096 Sep  5 16:20 Variables/
+drwxrwxr-x 3 root  root   4096 Sep  9 22:09 SpecialForm/
+-rw-r--r-- 1 root  root    845 Sep 24 13:49 ExpandAfter.php
+-rw-r--r-- 1 root  root  14095 Sep 24 15:26 include.php
+-rw-r--r-- 1 root  root   1821 Oct 30 14:11 accesscontrolSettings.php
+-rw-r--r-- 1 root  root   6450 Nov  4 19:44 navigation.php
+
+# Following lines are by Kiichiro
+require_once( "$IP/extensions/ExpandAfter.php");
+
+require_once("extensions/ParserFunctions/ParserFunctions.php");
+require_once($IP . "/extensions/inputbox/inputbox.php");
+require_once("$IP/extensions/Variables/Variables.php");
+require_once("$IP/extensions/SpecialForm/SpecialForm.setup.php");
+require_once("$IP/extensions/navigation.php");
+
+require_once("$IP/extensions/include.php");
+$wg_include_allowed_parent_paths = $_SERVER['DOCUMENT_ROOT'];
+$wg_include_disallowed_regex = array('/.*LocalSettings.php/', '/.*\.conf/');
+
+$wgShowExceptionDetails = true;
+
+$wgGroupPermissions['*'   ]['delete'] = false;
+/* permit all the login accounts to delete pages */
+$wgGroupPermissions['user']['delete'] = true;
+#$wgCachePages = false;
+#$wgUseFileCache = false;
+#$wgEnableParserCache = false;
+
+array_push($wgFileExtensions, "diff");
+array_push($wgFileExtensions, "patch");
+array_push($wgFileExtensions, "tar");
+array_push($wgFileExtensions, "txt");
+array_push($wgFileExtensions, "gz");
+array_push($wgFileExtensions, "zip");
+array_push($wgFileExtensions, "odt");
+array_push($wgFileExtensions, "ods");
+array_push($wgFileExtensions, "doc");
+array_push($wgFileExtensions, "xls");
+
+$wgLogo = "http://wiki.jp.tlan/mediawiki/penguin.jpg";
+$wgGroupPermissions['*']['edit'] = false;

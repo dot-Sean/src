@@ -1,0 +1,36 @@
+#!/bin/bash
+# -*- coding: utf-8 -*-
+
+function foo() {
+  local -a aline=("$@") astr0 astr1
+  { IFS="|" read -a astr0; } <<< "${aline[0]}"
+  { IFS="|" read -a astr1; } <<< "${aline[1]}"
+  n=${#astr0[@]}
+  akey=()
+  for ((; i < n; i ++))
+  do
+    key0=${astr0[$i]//[[:blank:]]/}
+    for key1 in ${astr1[$i]}
+    do
+      akey[${#akey[@]}]="$key0 $key1"
+    done
+  done
+  for line in "${aline[@]}"
+  do
+    { IFS=":" read name vals; } <<< "$line"
+    name=${name//[[:blank:]]/}
+    read -a aval <<< "$vals"
+    for i in ${!aval[@]}
+    do
+      echo "$name - ${akey[$i]}: ${aval[$i]}"
+    done
+  done
+}
+{ IFS=$'\n' read -d "" -a aline; } < /proc/net/dev
+{ IFS=$'\n' read -d "" -a aoutput; } < <(foo "${aline[@]}")
+
+(IFS=$'\n'; echo "${aoutput[*]}";)
+#IFS=$'\n' cat <<< "${aoutput[*]}"
+#IFS=$'\n' eval echo \"\${aoutput[*]}\"
+#function putarray() { IFS=$'\n' eval echo \"\${$1[*]}\"; }; putarray aoutput
+#function putarray() { eval echo \"\${$1[*]}\"; }; IFS=$'\n' putarray aoutput

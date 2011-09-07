@@ -1,0 +1,22 @@
+title=新規チェックシート作成
+namePattern=CheckSheet/{{{ymd}}}-{{{name}}}
+template=Template:CheckSheetEx/Preload
+instructions=新規チェックシートの雛形を作成します。エントリの名前を入力して対象ディストリビューションを選択したら、"Save" を押してください。
+
+name|エントリの名前 (プレフィクスの日付は自動でつきます)|text|foo|bar
+
+tlc2008|Turbolinux Client 2008 (Magny-Cours)|checkbox|foo|bar
+tlas3_x64|Turbolinux Appliance Server 3 for X64 (Atlas64)|checkbox|foo|bar
+tlas3|Turbolinux Appliance Server 3 (Atlas)|checkbox|foo|bar
+tl11s_x64|Turbolinux 11 Server for X64 (Musasabi64)|checkbox|foo|bar
+tl11s|Turbolinux 11 Server (Musasabi)|checkbox|foo|bar
+wizpy|Wizpy|checkbox|foo|bar
+tlas2|Turbolinux Appliance Server 2 (Uran2)|checkbox|foo|bar
+tl11d|Turbolinux 11 Desktop (Fuji)|checkbox|foo|bar
+tl10s_x64|Turbolinux 10 Server for X64 (Santoka)|checkbox|foo|bar
+tlas1he|Turbolinux Appliance Server Hosting Edition (Uran)|checkbox|foo|bar
+tlas1we|Turbolinux Appliance Server Workgroup Edition / MMQUBE3 (Atom)|checkbox|foo|bar
+tl10s|Turbolinux 10 Server (Celica)|checkbox|foo|bar
+tl10d|Turbolinux 10 Desktop (Suzuka)|checkbox|foo|bar
+tl8s|Turbolinux 8 Server (Viper)|checkbox|foo|bar
+tl8d|Turbolinux 8 Desktop (SilverStone)|checkbox|foo|bar

@@ -1,0 +1,209 @@
+#!/bin/bash
+# -*- coding: utf-8 -*-
+
+# --------------------------------------------------------------------
+
+array_new () {
+  eval "$1=()"
+}
+
+function array_append () {
+  eval "$1[\${#$1[@]}]=\"\$2\""
+}
+
+function array_index () {
+  local elem count
+  count=0
+  eval "for elem in \"\${$1[@]}\";
+  do
+    if test \"\$2\" = \"\$elem\";
+    then
+      echo \$count
+      return 0
+    fi
+    count=\$((\$count + 1))
+  done"
+  echo -1
+  return 1
+}
+
+function array_has () {
+  array_index "$1" "$2" 1> /dev/null
+}
+
+function array_count () {
+  eval echo "\${#$1[@]}"
+}
+
+echo_array () {
+  local val
+  eval "for val in \"\${$1[@]}\"
+  do
+    echo \"\$val\"
+  done"
+}
+
+function array_sort () {
+  local -a func_array_sort_array
+  eval func_array_sort_array=(\"\${$1[@]}\")
+  array_new "$1"
+  while read -r line
+  do
+    array_append "$1" "$line"
+  done < <( echo_array func_array_sort_array | sort )
+}
+
+# --------------------------------------------------------------------
+
+function dict_new () {
+  eval "$1=()"
+  eval "$2=()"
+}
+
+function dict_set () {
+  if array_has "$1" "$3"
+  then
+    local i=`array_index "$1" "$3"`
+    eval "$1[$i]=\"\$3\""
+    eval "$2[$i]=\"\$4\""
+  else
+    array_append "$1" "$3"
+    array_append "$2" "$4"
+  fi
+}
+
+function dict_get () {
+  local i=`array_index "$1" "$3"`
+  eval echo "\${$2[$i]}"
+}
+
+# --------------------------------------------------------------------
+
+declare -a array
+array_new array
+array[${#array[@]}]="HOGE HOGE"
+array[${#array[@]}]="FUGA FUGA"
+array_append array "FOO FOO"
+array_append array "123 \$\""
+array_append array "BAR BAR"
+array_append array "789 \`\'\(\\"
+
+echo count: `array_count array`
+
+for val in "${array[@]}" # @ in "" is expanded into multi strings
+do
+  echo d0-0: "$val"
+done
+echo
+
+array_sort array
+
+#for val in "${array[@]}"
+#do
+#  echo d0-1: $val
+#done
+
+echo_array array
+echo
+
+for val in "${array[@]:1:2}"
+do
+  echo d0-2: $val
+done
+echo
+
+for elem in "FUGA FUGA" "HARE HARE" "BAR BAR"
+do
+  if array_has array "$elem"
+  then
+    i=`array_index array "$elem"`
+    echo \"${array[$i]}\" is at $i of array \$array
+  else
+    echo \"$elem\" is not in array \$array
+  fi
+done
+
+# associative arrays?
+keys=("hoge hoge" "fuga fuga" "foo foo" "bar bar")
+vals=("HOGE HOGE" "FUGA FUGA" "FOO FOO" "BAR BAR")
+dict_set keys vals "foo bar" "FOO BAR \$\""
+dict_set keys vals "foo foo" "FOO FOO FOO"
+for key in "foo foo" "hare hare" "foo bar"
+do
+  #array_has keys "$key" && val=${vals[`array_index keys "$key"`]} || val=""
+  array_has keys "$key" && val=`dict_get keys vals "$key"` || val=""
+  echo key: $key "->" val: $val
+done
+
+a=()
+a[${#a[@]}]="New line 0"
+array_append a "New line 1"
+
+for i in "${!a[@]}"
+do
+  echo d1: ${a[$i]}
+done
+
+# --------------------------------------------------------------------
+# 擬似 2 次元配列
+
+keys=("hoge" "fuga")
+vals=("HOGE HOGE" "FUGA FUGA")
+
+for key in "${keys[@]}"
+do
+  eval mockarray_$key=\"d: $key $key\"
+done
+
+for i in ${!mockarray_*}
+do
+  echo tmp=\$$i
+  eval tmp=\$$i
+  echo $tmp
+done
+
+# --------------------------------------------------------------------
+# 値のペアの配列
+
+a=(
+ 123 "abc"
+ 789 "xyz"
+)
+
+n=$((${#a[@]} / 2))
+for ((i = 0; i < n; i ++))
+do
+  echo d: ${a[$(($i * 2))]}, ${a[$(($i * 2 + 1))]}
+done
+
+# 値と可変長リストは、こんな感じか
+
+arecord=(
+ "123:ab,c"
+ "789:v,wx,y,zzz"
+)
+
+arecord2=()
+
+for record in "${arecord[@]}"
+do
+  IFS=":" read key vals <<< "$record"
+  IFS="," read -a aval <<< "$vals"
+  for val in "${aval[@]}"
+  do
+    len=${#val}
+    echo d3: $key, $val, $len
+  done
+  # 配列の一発連結。なぜ echo ではできない？
+  arecord2[${#arecord2[@]}]=$key:$(IFS="," cat <<< "${aval[*]}")
+done
+
+# 同じく一発連結して出力
+IFS=$'\n' cat -n <<< "${arecord2[*]}"
+
+# --------------------------------------------------------------------
+dict_new k v
+dict_set k v "abc" 123
+dict_set k v "xyz" 789
+echo d: $(dict_get k v "xyz")
+echo d: $(dict_get k v "abc")

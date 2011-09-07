@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# {} creates the products
+find . -type f -exec echo {PREFIX1_,PREFIX2}{}{_POSTFIXA,_POSTFIXB} \;

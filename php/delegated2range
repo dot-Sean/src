@@ -1,0 +1,49 @@
+#!/bin/sh
+tmpdir=`mktemp -d /tmp/XXXXXX`
+for url in \
+ ftp://ftp.apnic.net/pub/stats/apnic/delegated-apnic-latest \
+ ftp://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-latest \
+ ftp://ftp.arin.net/pub/stats/arin/delegated-arin-latest \
+ ftp://ftp.ripe.net/ripe/stats/delegated-ripencc-latest \
+ ftp://ftp.afrinic.net/pub/stats/afrinic/delegated-afrinic-latest \
+ ftp://ftp.apnic.net/pub/stats/iana/delegated-iana-latest
+do
+  wget --directory-prefix=$tmpdir $url || exit 1
+done
+python - $tmpdir/delegated-*-latest <<'EOF'
+import sys
+types = [ "ipv4", "ipv6", ]
+ccs = [ "CN", "JP", ]
+ranges = {}
+for type in types:
+  ranges[type] = {}
+  for cc in ccs:
+    ranges[type][cc] = []
+files = sys.argv[1:]
+for file in files:
+  for line in open(file).readlines():
+    fields = line.split("|")
+    if len(fields) < 7:
+      continue
+    cc = fields[1]
+    type = fields[2]
+    start = fields[3]
+    value = fields[4]
+    if type in types and cc in ccs:
+      ranges[type][cc].append((start, value,))
+output = open("ipranges.php", "w")
+output.write("<?\n")
+output.write("// Generated with delegated2range script automatically. do not edit directly\n")
+output.write("$ipranges = array(\n")
+for type in types:
+  output.write("  \"%s\" => array(\n" % (type,))
+  for cc in ccs:
+    output.write("    \"%s\" => array(\n" % (cc,))
+    for (start, length,) in ranges[type][cc]:
+      output.write("      array(\"%s\", %s),\n" % (start, length,))
+    output.write("    ),\n")
+  output.write("  ),\n")
+output.write(");\n")
+output.write("?>\n")
+EOF
+rm -fr $tmpdir

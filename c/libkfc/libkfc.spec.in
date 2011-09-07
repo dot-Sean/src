@@ -1,0 +1,65 @@
+%define distrib TurboLinux
+%define name    __NAME__
+%define ver     __VERSION__
+%define rel     __RELEASE__
+%define prefix  /usr
+
+Summary: A C library of useful classes.
+Name: %{name}
+Version: %{ver}
+Release: %{rel}
+CopyRight: GPL
+Group: System/Libraries
+Source0: libkfc-%{PACKAGE_VERSION}.tar.gz
+#URL:
+Serial: __SERIAL__
+Distribution: %{distrib}
+BuildRoot: /var/tmp/%{name}-root
+Packager: Kiichiro Kyle Naka <knaka@turbolinux.co.jp>
+BuildPrereq: libxml-devel
+PreReq: zlib
+
+%description
+A C library of useful classes.
+
+%package devel
+Summary: Static libraries and headers to develop libkfc applications.
+Group: System/Libraries
+PreReq: libkfc
+
+%description devel
+Static libraries and headers to develop libkfc applications.
+
+%prep
+%setup -q 0
+
+%build
+make
+
+%install
+rm -fr $RPM_BUILD_ROOT
+make install PREFIX=$RPM_BUILD_ROOT%{prefix}
+
+%post
+/sbin/ldconfig
+
+%clean
+rm -fr $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root)
+%{prefix}/lib/*.so
+%{prefix}/lib/*.so.*
+
+%files devel
+%defattr(-,root,root)
+%{prefix}/include/*.h
+%{prefix}/lib/*.a
+
+%changelog
+* Fri Jul 07 2000 Kiichiro Kyle Naka <knaka@turbolinux.co.jp>
+- Applied Centro rules
+
+* Wed Mar 29 2000 Kiichiro Naka <knaka@turbolinux.co.jp>
+- 0.9
+- New package

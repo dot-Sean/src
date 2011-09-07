@@ -1,0 +1,11 @@
+#!/bin/bash
+files="$*"
+if test -z "$files"
+then
+  exit 1
+fi
+for path in $files
+do
+  test ${path:0:1} = "/" && path=$path || path=$PWD/$path
+  echo $path
+done

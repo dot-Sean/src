@@ -1,0 +1,300 @@
+{{CheckSheetEx
+<!-- チェックシートを書く人は、以下に日付を記してサインしてください。
+     エントリを無効にするには, "RequestBy" を空にしてください
+     （まだ書きかけで、QA の作業をしないで欲しい場合など）。 -->
+|RequestDate = {{<includeonly>subst:</includeonly>CURRENTYEAR}}/{{<includeonly>subst:</includeonly>CURRENTMONTH}}/{{<includeonly>subst:</includeonly>CURRENTDAY2}}
+|RequestBy = 
+<!-- 簡潔なタイトルをつけてください -->
+|Summary = 
+○○が××する問題の修正。
+<!-- QA スタッフが経緯を辿れるよう、Bugzilla の ID を明記してください ("10" まで書けます) -->
+|BugzillaId = 00000
+|BugzillaId1 = 
+|BugzillaId2 = 
+<!-- 勧告に出す文章を記述してください -->
+|Description = 
+  パッケージ名 : base-alpine, base-user
+  
+  タイトル : 電子メール転送の設定
+  
+  概要 : base-alpine は、Turbolinux Appliance Server のコアとなるモジュールです。
+         base-user は、ユーザに関する設定をするモジュールです。
+  
+         サイト管理者が”電子メール転送を有効にする”を設定できない問題を修正。
+  
+  影響 : サイト管理者で一般ユーザーの電子メール転送を有効にできない。
+<!-- その他、開発担当者からの再現方法、テスト結果、申し送り事項等 -->
+|Misc=
+不具合の再現方法:
+ # command --option=Value
+ Error!!! Foo bar!!!
+ #
+修正版での実行結果:
+ # command --option=Value
+ Successful!!!
+ #
+
+<!-- レポジトリ (CVS, SVN) 上の変更差分をポイントしてください -->
+|ReposChanges =
+* http://pkgcvs.turbolinux.co.jp/~knaka/cgi-bin/internal3/cvsweb.cgi/
+* http://svn.turbolinux.co.jp/cgi-bin/viewvc.cgi/
+
+<!-- パッケージの URL を記入してください -->
+|PkgUrls = {{<includeonly>subst:</includeonly>#ifeq:|||
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlc2008|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|tlc2008}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3_x64|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|tlas3_x64}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|tlas3}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s_x64|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|tl11s_x64}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|tl11s}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|wizpy}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas2|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|tlas2}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|tl11d}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s_x64|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|tl10s_x64}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1he|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|tlas1he}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1we|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|tlas1we}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|tl10s}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10d|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|tl10d}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8s|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|tl8s}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8d|off}}}|on|{{<includeonly>subst:</includeonly>MkPkgList|tl8d}}
+|}}
+
+<!-- 以下のチェック項目で、初期状態で "?" になっているところを
+     書き換えて、OK ならば "O", NG ならば "X", 
+     不要であれば "-" にしてください -->
+
+<!-- ******** 開発者チェック ******** -->
+<!-- ビルド log のエラー確認。configure の feature や、%files は OK か？ -->
+|BuildLogCheck = {{<includeonly>subst:</includeonly>#ifeq:|||
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlc2008|off}}}|on|** {{Check|tlc2008|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3_x64|off}}}|on|** {{Check|tlas3_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3|off}}}|on|** {{Check|tlas3|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s_x64|off}}}|on|** {{Check|tl11s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s|off}}}|on|** {{Check|tl11s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas2|off}}}|on|** {{Check|tlas2|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|** {{Check|tl11d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s_x64|off}}}|on|** {{Check|tl10s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1he|off}}}|on|** {{Check|tlas1he|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1we|off}}}|on|** {{Check|tlas1we|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s|off}}}|on|** {{Check|tl10s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10d|off}}}|on|** {{Check|tl10d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8s|off}}}|on|** {{Check|tl8s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8d|off}}}|on|** {{Check|tl8d|?}}
+|}}
+<!-- ChangeLog の記述確認。ChangeLog は書かれているか？ -->
+|ChangeLogCheck = {{<includeonly>subst:</includeonly>#ifeq:|||
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlc2008|off}}}|on|** {{Check|tlc2008|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3_x64|off}}}|on|** {{Check|tlas3_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3|off}}}|on|** {{Check|tlas3|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s_x64|off}}}|on|** {{Check|tl11s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s|off}}}|on|** {{Check|tl11s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas2|off}}}|on|** {{Check|tlas2|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|** {{Check|tl11d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s_x64|off}}}|on|** {{Check|tl10s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1he|off}}}|on|** {{Check|tlas1he|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1we|off}}}|on|** {{Check|tlas1we|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s|off}}}|on|** {{Check|tl10s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10d|off}}}|on|** {{Check|tl10d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8s|off}}}|on|** {{Check|tl8s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8d|off}}}|on|** {{Check|tl8d|?}}
+|}}
+<!-- 基本動作及び、修正部分の動作の確認 (不具合が修正されていること) をしたか？ -->
+|BasicCheck = {{<includeonly>subst:</includeonly>#ifeq:|||
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlc2008|off}}}|on|** {{Check|tlc2008|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3_x64|off}}}|on|** {{Check|tlas3_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3|off}}}|on|** {{Check|tlas3|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s_x64|off}}}|on|** {{Check|tl11s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s|off}}}|on|** {{Check|tl11s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas2|off}}}|on|** {{Check|tlas2|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|** {{Check|tl11d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s_x64|off}}}|on|** {{Check|tl10s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1he|off}}}|on|** {{Check|tlas1he|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1we|off}}}|on|** {{Check|tlas1we|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s|off}}}|on|** {{Check|tl10s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10d|off}}}|on|** {{Check|tl10d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8s|off}}}|on|** {{Check|tl8s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8d|off}}}|on|** {{Check|tl8d|?}}
+|}}
+<!-- Running test (daemon 等) をしたか？ (常駐しないアプリケーションでは不要) -->
+|RunningTest = {{<includeonly>subst:</includeonly>#ifeq:|||
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlc2008|off}}}|on|** {{Check|tlc2008|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3_x64|off}}}|on|** {{Check|tlas3_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3|off}}}|on|** {{Check|tlas3|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s_x64|off}}}|on|** {{Check|tl11s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s|off}}}|on|** {{Check|tl11s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas2|off}}}|on|** {{Check|tlas2|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|** {{Check|tl11d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s_x64|off}}}|on|** {{Check|tl10s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1he|off}}}|on|** {{Check|tlas1he|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1we|off}}}|on|** {{Check|tlas1we|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s|off}}}|on|** {{Check|tl10s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10d|off}}}|on|** {{Check|tl10d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8s|off}}}|on|** {{Check|tl8s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8d|off}}}|on|** {{Check|tl8d|?}}
+|}}
+<!-- アンインストールできることを確認したか？ -->
+|UninstallTest = {{<includeonly>subst:</includeonly>#ifeq:|||
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlc2008|off}}}|on|** {{Check|tlc2008|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3_x64|off}}}|on|** {{Check|tlas3_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3|off}}}|on|** {{Check|tlas3|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s_x64|off}}}|on|** {{Check|tl11s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s|off}}}|on|** {{Check|tl11s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas2|off}}}|on|** {{Check|tlas2|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|** {{Check|tl11d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s_x64|off}}}|on|** {{Check|tl10s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1he|off}}}|on|** {{Check|tlas1he|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1we|off}}}|on|** {{Check|tlas1we|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s|off}}}|on|** {{Check|tl10s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10d|off}}}|on|** {{Check|tl10d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8s|off}}}|on|** {{Check|tl8s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8d|off}}}|on|** {{Check|tl8d|?}}
+|}}
+
+<!-- ******** QA 担当者テスト作業 ******** -->
+<!-- 基本動作及び、修正部分の動作の確認 (不具合が修正されていること) をしたか？ -->
+|QaBasicCheck = {{<includeonly>subst:</includeonly>#ifeq:|||
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlc2008|off}}}|on|** {{Check|tlc2008|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3_x64|off}}}|on|** {{Check|tlas3_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3|off}}}|on|** {{Check|tlas3|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s_x64|off}}}|on|** {{Check|tl11s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s|off}}}|on|** {{Check|tl11s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas2|off}}}|on|** {{Check|tlas2|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|** {{Check|tl11d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s_x64|off}}}|on|** {{Check|tl10s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1he|off}}}|on|** {{Check|tlas1he|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1we|off}}}|on|** {{Check|tlas1we|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s|off}}}|on|** {{Check|tl10s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10d|off}}}|on|** {{Check|tl10d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8s|off}}}|on|** {{Check|tl8s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8d|off}}}|on|** {{Check|tl8d|?}}
+|}}
+<!-- Running test (daemon 等) をしたか？ (常駐しないアプリケーションでは不要) -->
+|QaRunningTest = {{<includeonly>subst:</includeonly>#ifeq:|||
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlc2008|off}}}|on|** {{Check|tlc2008|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3_x64|off}}}|on|** {{Check|tlas3_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3|off}}}|on|** {{Check|tlas3|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s_x64|off}}}|on|** {{Check|tl11s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s|off}}}|on|** {{Check|tl11s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas2|off}}}|on|** {{Check|tlas2|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|** {{Check|tl11d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s_x64|off}}}|on|** {{Check|tl10s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1he|off}}}|on|** {{Check|tlas1he|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1we|off}}}|on|** {{Check|tlas1we|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s|off}}}|on|** {{Check|tl10s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10d|off}}}|on|** {{Check|tl10d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8s|off}}}|on|** {{Check|tl8s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8d|off}}}|on|** {{Check|tl8d|?}}
+|}}
+<!-- アンインストールできることを確認したか？ -->
+|QaUninstallTest = {{<includeonly>subst:</includeonly>#ifeq:|||
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlc2008|off}}}|on|** {{Check|tlc2008|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3_x64|off}}}|on|** {{Check|tlas3_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3|off}}}|on|** {{Check|tlas3|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s_x64|off}}}|on|** {{Check|tl11s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s|off}}}|on|** {{Check|tl11s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas2|off}}}|on|** {{Check|tlas2|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|** {{Check|tl11d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s_x64|off}}}|on|** {{Check|tl10s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1he|off}}}|on|** {{Check|tlas1he|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1we|off}}}|on|** {{Check|tlas1we|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s|off}}}|on|** {{Check|tl10s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10d|off}}}|on|** {{Check|tl10d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8s|off}}}|on|** {{Check|tl8s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8d|off}}}|on|** {{Check|tl8d|?}}
+|}}
+
+<!-- QA で OK を出した人は、以下に日付を記してサインをしてください -->
+|QaCheckDate = {{<includeonly>subst:</includeonly>CURRENTYEAR}}/{{<includeonly>subst:</includeonly>CURRENTMONTH}}/XX
+|QaCheckBy = 
+<!-- その他、QA 担当者からのテスト結果、申し送り事項等 -->
+|QaMisc=
+実行結果:
+ # command --option=Value
+ Successful!!!
+ #
+
+<!-- マネージャは、以下に日付を記してサインをしてください -->
+|ManagerCheckDate = {{<includeonly>subst:</includeonly>CURRENTYEAR}}/{{<includeonly>subst:</includeonly>CURRENTMONTH}}/XX
+|ManagerCheckBy = 
+<!-- その他、マネージャからの特記事項、申し送り事項等 -->
+|ManagerMisc= 
+
+<!-- ******** リリース担当者作業・テスト ******** -->
+<!-- GPG サインされているか？ -->
+|SignatureCheck = {{<includeonly>subst:</includeonly>#ifeq:|||
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlc2008|off}}}|on|** {{Check|tlc2008|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3_x64|off}}}|on|** {{Check|tlas3_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3|off}}}|on|** {{Check|tlas3|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s_x64|off}}}|on|** {{Check|tl11s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s|off}}}|on|** {{Check|tl11s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas2|off}}}|on|** {{Check|tlas2|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|** {{Check|tl11d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s_x64|off}}}|on|** {{Check|tl10s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1he|off}}}|on|** {{Check|tlas1he|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1we|off}}}|on|** {{Check|tlas1we|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s|off}}}|on|** {{Check|tl10s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10d|off}}}|on|** {{Check|tl10d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8s|off}}}|on|** {{Check|tl8s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8d|off}}}|on|** {{Check|tl8d|?}}
+|}}
+<!-- 新規アプリケーションの場合、comps に記述されているか？ -->
+|CompsCheck = {{<includeonly>subst:</includeonly>#ifeq:|||
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlc2008|off}}}|on|** {{Check|tlc2008|-}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3_x64|off}}}|on|** {{Check|tlas3_x64|-}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3|off}}}|on|** {{Check|tlas3|-}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s_x64|off}}}|on|** {{Check|tl11s_x64|-}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s|off}}}|on|** {{Check|tl11s|-}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy|-}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas2|off}}}|on|** {{Check|tlas2|-}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|** {{Check|tl11d|-}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s_x64|off}}}|on|** {{Check|tl10s_x64|-}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1he|off}}}|on|** {{Check|tlas1he|-}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1we|off}}}|on|** {{Check|tlas1we|-}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s|off}}}|on|** {{Check|tl10s|-}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10d|off}}}|on|** {{Check|tl10d|-}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8s|off}}}|on|** {{Check|tl8s|-}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8d|off}}}|on|** {{Check|tl8d|-}}
+|}}
+<!-- テストアップデートサーバからのインストールはできるか？ -->
+|TestServerInstallCheck = {{<includeonly>subst:</includeonly>#ifeq:|||
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlc2008|off}}}|on|** {{Check|tlc2008|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3_x64|off}}}|on|** {{Check|tlas3_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas3|off}}}|on|** {{Check|tlas3|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s_x64|off}}}|on|** {{Check|tl11s_x64|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11s|off}}}|on|** {{Check|tl11s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy_no_license|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy_expire_license|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy_intl|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy_intl_no_license|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{wizpy|off}}}|on|** {{Check|wizpy_intl_no_expire_license|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas2|off}}}|on|** {{Check|tlas2|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|** {{Check|tl11d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|** {{Check|tl11d_intl|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|** {{Check|tl11d_basic|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl11d|off}}}|on|** {{Check|tl11d_trial|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s_x64|off}}}|on|** {{Check|tl10s_x64_turboplus|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s_x64|off}}}|on|** {{Check|tl10s_x64_turbopkg|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1he|off}}}|on|** {{Check|tlas1he|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tlas1we|off}}}|on|** {{Check|tlas1we|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s|off}}}|on|** {{Check|tl10s_turboplus|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10s|off}}}|on|** {{Check|tl10s_turbopkg|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl10d|off}}}|on|** {{Check|tl10d|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8s|off}}}|on|** {{Check|tl8s|?}}
+|}}{{<includeonly>subst:</includeonly>#ifeq:{{{tl8d|off}}}|on|** {{Check|tl8d|?}}
+}}
+
+<!-- リリースをしたら、以下に日付を記してサインをしてください -->
+|ReleaseDate = {{<includeonly>subst:</includeonly>CURRENTYEAR}}/{{<includeonly>subst:</includeonly>CURRENTMONTH}}/XX
+|ReleaseBy = 
+<!-- その他、リリース担当者からの特記事項等 -->
+|ReleaseMisc = 
+}}

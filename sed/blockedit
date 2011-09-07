@@ -1,0 +1,41 @@
+#!/bin/sh
+
+temp=/tmp/`basename $0`1.$$
+while test -e ${temp}
+do
+  temp=${temp}.$$
+done
+
+copied=/tmp/`basename $0`2.$$
+while test -e ${copied}
+do
+  copied=${copied}.$$
+done
+
+cat $1 > ${copied}
+
+if grep -q "export LANG" ${copied}
+then
+  tac ${copied} > ${temp}
+  perl - ${temp} <<'EOF' | tac
+$found = 0;
+while (<>) {
+  if ((! $found) && /export LANG/) {
+    print "# END_LANGSEL\n";
+    print "# BEGIN_LANGSEL\n";
+    $found = 1;
+  }
+  if (/^export LANG/) {
+    $_ = "#$_";
+  }
+  print;
+}
+EOF
+else
+  cat ${copied}
+  echo "# BEGIN_LANGSEL"
+  echo "# END_LANGSEL"
+fi
+
+rm -f ${temp}
+rm -f ${copied}

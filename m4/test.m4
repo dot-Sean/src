@@ -1,0 +1,2 @@
+define(hoge, HOGE)
+hoge

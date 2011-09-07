@@ -1,0 +1,9 @@
+#!/usr/bin/expect
+
+set prompt ".*knaka@.*"
+spawn ssh monet.ayutaya.com
+expect -re $prompt
+send "ls\r"
+send "exit\r"
+expect eof
+

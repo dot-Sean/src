@@ -1,0 +1,73 @@
+Name: __NAME__
+Version: __VERSION__
+Release: __RELEASE__
+Source0: __NAME__-__VERSION__.tar.gz
+Summary: __NAME__
+CopyRight: GPL
+Group: System Environment/Base
+BuildRoot: %{_tmppath}/%{name}-%{version}-root
+
+%description
+__NAME__
+
+%package libs
+Summary: Libraries for %{name}
+Group: System Environment/Libraries
+PreReq: /sbin/ldconfig
+
+%description libs
+Libraries for __NAME__
+
+%package devel
+Summary: Headers and library information for %{name}
+Group: Development/Libraries
+Requires: %{name}-libs = %{version}-%{release}
+
+%description devel
+Headers and library information for %{name}
+
+%package python
+Summary: Python module for %{name}
+Group: Development/Languages 
+
+%description python
+Python modules for __NAME__
+
+%prep
+%setup -q
+
+%build
+%configure
+make
+
+%install
+%makeinstall
+
+%post libs -p /sbin/ldconfig
+
+%postun libs -p /sbin/ldconfig
+
+%clean
+rm -fr $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root)
+%doc ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README
+%{_bindir}/*
+%{_datadir}/locale/*/LC_MESSAGES/*
+%{_mandir}/man1/*
+
+%files libs
+%{_libdir}/*.so.*
+
+%files devel
+%{_includedir}/*
+%{_libdir}/*.a
+%{_libdir}/*.la
+%{_libdir}/*.so
+%{_mandir}/man3/*
+
+%files python
+%{_prefix}/lib*/python*/site-packages/*
+
+%changelog

@@ -1,0 +1,1 @@
+KERNEL=="bar[0-9]*", GROUP="root", MODE="0644"

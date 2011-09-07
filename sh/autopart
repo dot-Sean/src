@@ -1,0 +1,7 @@
+#!/bin/sh
+strg=/dev/hda
+msize=`sed -n -e 's/^MemTotal:\W\W*\(\w\w*\)\W.*$/\1/p' < /proc/meminfo`
+if test -z "$msize"; then msize=`expr 256 '*' 1024 - 1`; fi
+ssize=`expr '(' "$msize" / '(' 32 '*' 1024 ')' + 1 ')' '*' 32 '*' 2`
+if test "$ssize" -gt 2048; then ssize=2048; fi
+printf ",64,83,*\n,%d,82\n,4000,83\n,,5\n,,83\n" "$ssize" | sfdisk -n -uM $strg

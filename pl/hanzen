@@ -1,0 +1,10 @@
+#!/usr/bin/perl
+
+require "jcode.pl";
+
+&jcode'init();
+
+while (<>) {
+  &jcode'convert(*_, "euc", "", "z");
+  print "d:" . $_;
+}

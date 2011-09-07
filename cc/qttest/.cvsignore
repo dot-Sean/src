@@ -1,0 +1,4 @@
+qttest
+testform.cpp
+testform.h
+moc_*.cpp

@@ -1,0 +1,7 @@
+.cvsignore
+*_wrap.c
+*_wrap.cc
+PlCcprog.pm
+PlCprog.pm
+pyccprog.py
+pycprog.py

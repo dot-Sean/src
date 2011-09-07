@@ -1,0 +1,4 @@
+.cvsignore
+insmod.static
+newt.static
+

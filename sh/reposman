@@ -1,0 +1,324 @@
+#!/bin/bash
+
+export SVKROOT=/work/svkrepos
+export LANG=C
+export LC_ALL=$LANG
+export LANGUAGE=$LANG
+
+if test -z "$SVN_EDITOR"
+then
+  if test -n "$EDITOR"
+  then
+    SVN_EDITOR=$EDITOR
+  else
+    SVN_EDITOR=/bin/vi
+  fi
+  export SVN_EDITOR
+fi
+
+svnroot=/work/svnrepos
+defdistroid=12
+defprot="svn+ssh"
+defhost=svn.turbolinux.co.jp
+defsourceid=cooker
+# The names of Manbo binary-common SRPMs
+mnbbcmn12="kernel binutils gcc"
+# The names of Manbo source-common SRPMs
+mnbscmn12="glibc device-mapper dmraid iptables lvm2 mdadm sysfsutils wireless-tools ifmetric acpid e2fsprogs reserfsprogs xfsprogs jfsutils mkinitrd rpm-manbo-setup udev"
+
+function copyIds {
+  host=$1
+  shift
+  copied=0
+  while [ $# != 0 ]
+  do
+    id=$1
+    shift
+    chain=$1
+    shift
+    if [ -r ${HOME}/.ssh/$id ]
+    then
+      cat ${HOME}/.ssh/$id | ssh $host "test -d .ssh || mkdir .ssh ; cat >> .ssh/$chain ; chmod 700 .ssh ; chmod 600 .ssh/$chain"
+      copied=1
+    fi
+  done
+  if test $copied = 0
+  then
+    echo No public-key found.
+    exit 1
+  fi
+}
+
+function idset {
+  prot=$1
+  host=$2
+  distroid=$3
+  name=$4
+  svn list $prot://$host/$svnroot/pkg/$distroid/$name/current/SPECS/ | \
+   while read file
+  do
+    case $file in
+      (*.spec)
+        if ! svn propget svn:keywords \
+         $prot://$host/$svnroot/pkg/$distroid/$name/current/SPECS/$file |
+         grep -q '\<Id\>'
+        then
+          tmpdir=`mktemp -d /tmp/XXXXXX`
+          pushd $tmpdir
+          svn co $prot://$host/$svnroot/pkg/$distroid/$name/current/SPECS/
+          cd SPECS
+          svn propset svn:keywords Id $file
+          svn commit -m "change property for specfile"
+          cd ..
+          popd
+          rm -fr $tmpdir
+        fi
+        ;;
+    esac
+  done
+  
+}
+
+command="$1"
+shift
+
+case $command in
+  (scpid)
+    host="$1"
+    if test -z "$host"
+    then
+      host="$defhost"
+    fi
+    copyIds "$host" \
+     "identity.pub" "authorized_keys" \
+     "id_rsa.pub"   "authorized_keys2" \
+     "id_dsa.pub"   "authorized_keys2"
+    ;;
+  (import)
+    force=false
+    while getopts f arg
+    do
+      case $arg in
+        f)
+          force=true
+          ;;
+        ?)
+          exit 1
+          ;;
+      esac
+    done
+    shift `expr $OPTIND - 1`
+    srpms="$*"
+    if test -z "$srpms"
+    then
+      echo "Usage: import SRPM [ SRPMS ... ]"
+      exit 1
+    fi
+    for srpm in $srpms
+    do
+      test ${srpm:0:1} = "/" && srpm=$srpm || srpm=$PWD/$srpm
+      if ! test -r $srpm
+      then
+        echo Not found: $srpm
+        exit 1
+      fi      
+      name=`rpm -qp --qf '%{name}' $srpm`
+      prot=$defprot
+      host=$defhost
+      distroid=$defdistroid
+      tmpdir=`mktemp -d /tmp/XXXXXX`
+      pushd $tmpdir > /dev/null 2>&1
+      if svn info $prot://$host/$svnroot/pkg/$distroid/$name 2>&1 | 
+       grep -q "Not a valid URL"
+      then
+        mkdir -p current
+        cd current
+        mkdir SPECS
+        mkdir SOURCES
+        \rpm "--define=_topdir `pwd`" -i $srpm
+        cd ..
+        svn import $prot://$host/$svnroot/pkg/$distroid/$name/
+      elif svn info $prot://$host/$svnroot/pkg/$distroid/$name/current 2>&1 |
+       grep -q "Not a valid URL"
+      then
+        mkdir SPECS
+        mkdir SOURCES
+        \rpm "--define=_topdir `pwd`" -i $srpm
+        svn import $prot://$host/$svnroot/pkg/$distroid/$name/current
+      elif test "$force" = "true"
+      then
+        svn co $prot://$host/$svnroot/pkg/$distroid/$name/current
+        cd current
+        rm -f SPECS/*.spec SOURCES/*
+        \rpm "--define=_topdir `pwd`" -i $srpm
+        tmpfile=`mktemp /tmp/XXXXXX`
+        added=`svn stat | grep ^? | awk '{print $2}'`
+        missing=`svn stat | grep ^! | awk '{print $2}'`
+        if test -n "$added"
+        then
+          svn add $added
+        fi
+        if test -n "$missing"
+        then
+          svn remove --force $missing
+        fi
+        echo ----------------------------------------------------------------------
+        svn stat
+        echo -n "Warning: You are going to overwrite existing files in the repository. Proceed? (y/N): "
+        read i
+        if test "$i" = "y" -o "$i" = "Y"
+        then
+          svn commit
+        fi
+        rm -f $tmpfile
+      else
+        echo '"current" directory already exists.'
+        exit 1
+      fi
+      popd > /dev/null 2>&1
+      rm -fr tmpdir
+      idset $prot $host $distroid $name
+    done
+    ;;
+  (idset)
+    name="$1"
+    prot=$defprot
+    host=$defhost
+    distroid=$defdistroid
+    idset $prot $host $distroid $name
+    ;;
+  (import-cooker)
+    name="$1"
+    prot=$defprot
+    host=$defhost
+    distroid=$defdistroid
+    tmpfile=`mktemp /tmp/XXXXXX`
+    if ! svn info $prot://$host/$svnroot/pkg/$distroid/$name/current 2>&1 | \
+     grep -q "Not a valid URL"
+    then
+      echo /pkg/$distroid/$name/current already exists.
+      exit 1
+    fi
+    svn mkdir -m "" $prot://$host/$svnroot/pkg/$distroid/$name
+    rev=`svn info $prot://$host/$svnroot/mirror/cooker/$name/current/SPECS | \
+     grep "^Last Changed Rev:" | sed -e 's@.* @@'`
+    svn copy -m "reposman copied from cooker revision $rev" $prot://$host/$svnroot/mirror/cooker/$name/current \
+     $prot://$host/$svnroot/pkg/$distroid/$name/current
+    svn log --xml $prot://$host/$svnroot/mirror/cooker/$name/current > \
+     $tmpfile
+    svn import -m "" $tmpfile \
+     $prot://$host/$svnroot/pkg/$distroid/$name/current/SPECS/changelog.mandriva.xml
+    echo "*" `date "+%a %b %d %Y"` $USER "<$USER>" > $tmpfile
+    echo "- imported from cooker" >> $tmpfile
+    svn import -m "" $tmpfile \
+     $prot://$host/$svnroot/pkg/$distroid/$name/current/SPECS/changelog.turbolinux
+    rm -f $tmpfile
+    ;;
+  (import-fedora)
+    name="$1"
+    prot=$defprot
+    host=$defhost
+    distroid=$defdistroid
+    if ! svn info $prot://$host/$svnroot/pkg/$distroid/$name/current 2>&1 | \
+     grep -q "Not a valid URL"
+    then
+      echo /pkg/$distroid/$name/current already exists.
+      exit 1
+    fi
+    if svn info $prot://$host/$svnroot/cvs-mirror/fedora/$name/$name.spec 2>&1 | \
+     grep -q "Not a valid URL"
+    then
+      echo SPEC file \"$name.spec\" does not exist.
+      exit 1
+    fi
+    rev=`svn info $prot://$host/$svnroot/cvs-mirror/fedora/$name/$name.spec | \
+     grep "^Last Changed Rev:" | sed -e 's@.* @@'`
+    svn mkdir -m "" $prot://$host/$svnroot/pkg/$distroid/$name
+    svn mkdir -m "" $prot://$host/$svnroot/pkg/$distroid/$name/current/
+    svn copy -m "reposman copied from fedora revision $rev" $prot://$host/$svnroot/cvs-mirror/fedora/$name \
+     $prot://$host/$svnroot/pkg/$distroid/$name/current/SOURCES
+    svn mkdir -m "" $prot://$host/$svnroot/pkg/$distroid/$name/current/SPECS
+    svn copy -m "reposman copied from fedora revision $rev" $prot://$host/$svnroot/cvs-mirror/fedora/$name/$name.spec \
+     $prot://$host/$svnroot/pkg/$distroid/$name/current/SPECS/
+    ;;
+  (co)
+    name="$1"
+    shift
+    if test -z "$name"
+    then
+      echo "Usage: co NAME"
+      exit 1
+    fi
+    prot=$defprot
+    host=$defhost
+    distroid=$defdistroid
+    pushd ~
+    svn co -N $prot://$host/$svnroot/pkg/$distroid/
+    cd $distroid
+    if test -d .svn
+    then
+      svn update $name
+    else
+      svn co $prot://$host/$svnroot/pkg/$distroid/$name $distroid/$name
+    fi
+    popd
+    ;;
+  (coroot)
+    path="$1"
+    shift
+    if test -z "$path"
+    then
+      echo "Usage: coroot PATH"
+      exit 1
+    fi
+    prot=$defprot
+    host=$defhost
+    distroid=$defdistroid
+    mkdir -p $distroid
+    svn co $prot://$host/$svnroot/$path
+    ;;
+  (mirror-fedora)
+    pkg=$1
+    shift
+    if test -z "$pkg"
+    then
+      echo "usage: mirror-fedora PKGNAME"
+      exit 1
+    fi
+    ssh $defhost "reposman-admin mirror-fedora $pkg"
+    ;;
+  (sync-fedora)
+    pkg=$1
+    shift
+    ssh $defhost "reposman-admin sync-fedora $pkg"
+    ;;
+  (mirror-cooker-ssh)
+    pkg=$1
+    shift
+    if test -z "$pkg"
+    then
+      echo "usage: mirror-cooker-ssh PKGNAME"
+      exit 1
+    fi
+    ssh $defhost "reposman-admin mirror-cooker-ssh $pkg"
+    ;;
+  (mirror-cooker)
+    pkg=$1
+    shift
+    if test -z "$pkg"
+    then
+      echo "usage: mirror-cooker-anon PKGNAME"
+      exit 1
+    fi
+    ssh $defhost "reposman-admin mirror-cooker $pkg"
+    ;;
+  (sync-cooker)
+    pkg=$1
+    shift
+    ssh $defhost "reposman-admin sync-cooker $pkg"
+    ;;
+  (*)
+    echo Illegal subcommand \"$command\"
+    exit 1
+    ;;
+esac

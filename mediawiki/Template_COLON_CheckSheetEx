@@ -1,0 +1,71 @@
+__NOEDITSECTION__<includeonly>{{#ifeq:{{{RequestBy}}}|||[[Category:CheckSheet]]}}</includeonly>{{#vardefine:NgChecked|}}{{BackToCheckSheet}}
+
+{{{Summary}}}
+= このエントリの状態 =
+* {{#ifeq:{{{RequestBy|}}}||<font color=red>申請者 ("RequestBy" の項目) が記されていないので、このエントリは、まだ一覧に現れていません</font>|{{{RequestBy}}} によって {{{RequestDate}}} にチェック依頼がなされました}}
+* {{#ifeq:{{{QaCheckBy|}}}||まだ QA のチェックを経ていません|{{{QaCheckBy|}}} によって {{{QaCheckDate}}} に QA チェックされました}}
+* {{ #ifeq: {{{ManagerCheckBy|}}} | |まだマネージャのチェックを経ていません|{{{ManagerCheckBy|}}} によって {{{ManagerCheckDate}}} にマネージャチェックされました}}
+* {{ #ifeq: {{{ReleaseBy|}}} | |まだリリースされていません|{{{ReleaseBy|}}} によって {{{ReleaseDate}}} にリリースされました}}
+= Bugzilla エントリ =
+{{#ifeq:{{{BugzillaId|}}}|||* https://bts.turbolinux.co.jp/bugzilla/show_bug.cgi?id={{{BugzillaId|}}}
+}}{{#ifeq:{{{BugzillaId1|}}}|||* https://bts.turbolinux.co.jp/bugzilla/show_bug.cgi?id={{{BugzillaId1|}}}
+}}{{#ifeq:{{{BugzillaId2|}}}|||* https://bts.turbolinux.co.jp/bugzilla/show_bug.cgi?id={{{BugzillaId2|}}}
+}}{{#ifeq:{{{BugzillaId3|}}}|||* https://bts.turbolinux.co.jp/bugzilla/show_bug.cgi?id={{{BugzillaId3|}}}
+}}{{#ifeq:{{{BugzillaId4|}}}|||* https://bts.turbolinux.co.jp/bugzilla/show_bug.cgi?id={{{BugzillaId4|}}}
+}}{{#ifeq:{{{BugzillaId5|}}}|||* https://bts.turbolinux.co.jp/bugzilla/show_bug.cgi?id={{{BugzillaId5|}}}
+}}{{#ifeq:{{{BugzillaId6|}}}|||* https://bts.turbolinux.co.jp/bugzilla/show_bug.cgi?id={{{BugzillaId6|}}}
+}}{{#ifeq:{{{BugzillaId7|}}}|||* https://bts.turbolinux.co.jp/bugzilla/show_bug.cgi?id={{{BugzillaId7|}}}
+}}{{#ifeq:{{{BugzillaId8|}}}|||* https://bts.turbolinux.co.jp/bugzilla/show_bug.cgi?id={{{BugzillaId8|}}}
+}}{{#ifeq:{{{BugzillaId9|}}}|||* https://bts.turbolinux.co.jp/bugzilla/show_bug.cgi?id={{{BugzillaId9|}}}
+}}{{#ifeq:{{{BugzillaId10|}}}|||* https://bts.turbolinux.co.jp/bugzilla/show_bug.cgi?id={{{BugzillaId10|}}}
+}}
+= 勧告文の記述 =
+  {{{Description|Qt ライブラリは、TrollTech 社によって作られたGUIツールキットです。
+  
+  ATOK X3 を使用時に Konqueror でファイルのプロパティを表示すると、ファイル名が".拡張子" だけになる問題を修正しました。}}}
+= テスト方法、申し送り事項等 =
+== 開発者 ==
+{{{Misc|（記述なし）}}}{{#ifeq:{{{QaMisc|}}}|||<br>
+== QA 担当者 ==
+{{{QaMisc}}}
+}}{{#ifeq:{{{ManagerMisc|}}}|||<br>
+== マネージャ ==
+{{{ManagerMisc}}}
+}}{{#ifeq:{{{ReleaseMisc|}}}|||<br>
+== リリース担当者 ==
+{{{ReleaseMisc}}}}}
+{{#ifeq:{{{ReposChanges|}}}|||= 変更差分 =
+{{{ReposChanges}}}}}
+= パッケージ =
+{{{PkgUrls}}}
+= 開発者パッケージチェック =
+* ビルド log のエラー確認
+{{{BuildLogCheck}}}
+* ChangeLog の記述確認
+{{{ChangeLogCheck}}}
+= 開発者動作チェック =
+* 基本動作及び、修正部分の動作の確認
+{{{BasicCheck}}}
+* Running test (daemon 等)
+{{{RunningTest}}}
+* アンインストールのテスト
+{{{UninstallTest}}}
+= QA 担当者動作チェック =
+* 基本動作及び、修正部分の動作の確認
+{{{QaBasicCheck}}}
+* Running test (daemon 等)
+{{{QaRunningTest}}}
+* アンインストールのテスト
+{{{QaUninstallTest}}}
+= リリース担当者作業・テスト =
+* GPG サインされている
+{{{SignatureCheck}}}
+<!-- * comps への追加 (新規の場合)
+{{{CompsCheck}}} -->
+* テストアップデートサーバからのインストールテスト
+{{{TestServerInstallCheck}}}
+<noinclude>
+[[Template:CheckSheetCheck]]
+[[Template:DistroId2Name]]
+</noinclude>
+<includeonly>{{#ifeq:{{{RequestBy}}}|||{{#if:{{#var:NgChecked}}|[[Category:CheckSheetNg]]|{{#ifeq:{{{QaCheckBy|}}}||[[Category:CheckSheetWaitingQaCheck]]|{{#ifeq:{{{ManagerCheckBy|}}}||[[Category:CheckSheetWaitingManagerCheck]]|{{#ifeq:{{{ReleaseBy|}}}||[[Category:CheckSheetWaitingRelease]]|[[Category:CheckSheetDone]]}}}}}}}}}}</includeonly>

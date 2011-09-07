@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="EUC-JP"?>
+<project default="hello">
+  <property name="sdir" value="./"/>
+  <property name="cdir" value="classes/"/>
+  <target name="cdir" description="バイナリ dest 作成">
+    <mkdir dir="${cdir}"/>
+  </target>
+  <target name="hello" depends="cdir" description="バイナリ作成">
+    <echo message="Hello World 日本語"/>
+    <javac srcdir="${sdir}" destdir="${cdir}"/>
+  </target>
+  <target name="test">
+    <java classname="HelloWorld" fork="true">
+      <arg value="hoge"/>
+      <classpath>
+        <pathelement path="${cdir}"/>
+      </classpath>
+    </java>
+    <exec dir="${cdir}" executable="java">
+      <arg line="HelloWorld"/>
+    </exec>
+  </target>
+  <target name="clean">
+    <delete dir="${cdir}"/>
+  </target>
+</project>

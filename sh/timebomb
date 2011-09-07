@@ -1,0 +1,20 @@
+#!/bin/sh
+
+enough_time=3
+# Fork the killer
+(
+  sleep $enough_time ;
+  ps $$ && kill -USR1 $$ ;
+  sleep 1 ;
+  ps $$ && kill -KILL $$
+) &
+
+#timer=$!
+trap "exit 0" USR1
+# real work
+while true
+do
+  sleep 1
+done
+#kill $timer
+exit 0

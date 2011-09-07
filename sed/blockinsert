@@ -1,0 +1,20 @@
+#!/bin/bash
+
+str0="hoge"
+str1="fuga"
+diff -uNr /etc/X11/xorg.conf <(
+sed --regexp-extended --file=- /etc/X11/xorg.conf <<EOF
+/Section.*"InputDevice".*/, /EndSection/ {
+  /EndSection/ i\\
+	Option "$str0"\\
+	Option "$str1"
+  \@identifier@I {
+    i\\
+	Identifier "Hoge"
+    d
+  }
+  /xkbmodel/I d
+  s/(Xkb)(Layout)/@@@\L\1\E-\U\1\E-\2-\ucapital@@@/I
+}
+EOF
+)

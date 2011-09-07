@@ -1,0 +1,115 @@
+#!/bin/bash
+# -*- coding: euc-jp -*-
+
+# $ unset s
+# $ echo ${s:-hoge}
+# hoge
+# $ echo $s
+# 
+# $ echo ${s:=hoge}
+# hoge
+# $ echo $s
+# hoge
+# $ 
+
+# default value
+foo="Init Value"
+echo d0-0: ${foo:-"Not Used Default Value"}
+echo d0-1: ${foo}
+echo
+
+unset foo
+echo d1-0: ${foo:-"Used Default"}
+echo d1-1: ${foo} "<-" Not assigned
+echo
+
+foo="Init Value"
+echo d2-0: ${foo:="Default Value 0"}
+echo d2-1: ${foo}
+echo
+
+unset foo
+echo d3-0: ${foo:="Default Value 1"}
+echo d3-1: ${foo}
+echo
+
+#foo="Initial value for \${foo}"
+#echo d4: ${foo:?"Hoge! \${foo} is not set!"} || true
+#
+#unset foo
+# This terminates the execution of the script!
+#echo d5: ${foo:?"Fuga! \${foo} is not set!"} || true
+#
+#foo="Initial value for \${foo}"
+#echo d6: ${foo:+"Forced value Hoge!"}
+#
+#unset foo
+#echo d7: ${foo:+"Forced value Fuga!"}
+
+# --------------------------------------------------------------------
+
+foo="TESTSTRING0123456780"
+# The offset and the length can be »»½Ñ¼°s
+echo d8: ${foo:1:$((${#foo} - 2))} "<-" the first and the last letter disappear
+
+# --------------------------------------------------------------------
+
+shopt -s extglob
+
+#foo="TEST_TEST"
+#echo d9: ${foo#+([TES])}
+#
+#foo="TEST_TEST"
+#echo d10: ${foo##+([TES])}
+
+foo="TEST_TEST"
+echo d11: ${foo%+([TES])}
+
+foo="TEST_TEST"
+echo d12: ${foo%%+([TES])}
+
+foo="TEST_TEST"
+echo d13: ${foo/+([TES])/HOGE}
+
+foo="TEST_TEST"
+echo d14: ${foo//+([TES])/FUGA}
+
+# --------------------------------------------------------------------
+
+filename="hoge-fuga.txt.txt"
+echo d15: ${filename//.txt/.doc}
+echo
+
+a=(
+ "abc123456"
+ "123456789"
+ "456789xyz"
+)
+
+shopt -s extglob
+
+b=(${a[@]/+([3-7])/})
+
+for s in "${b[@]}"
+do
+  echo d:16 $s
+done
+echo
+
+# beggining longest
+c=(${a[@]##+([3-7])})
+
+for s in "${c[@]}"
+do
+  echo d:17 $s
+done
+echo
+
+# trailing longest
+d=(${a[@]%%+([3-7])})
+
+for s in "${d[@]}"
+do
+  echo d:18 $s
+done
+echo

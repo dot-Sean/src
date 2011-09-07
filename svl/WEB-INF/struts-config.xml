@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts-config PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+ "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<struts-config>
+  <data-sources></data-sources>
+  <form-beans>
+    <form-bean name="HogeForm" type="com.ayutaya.struts.HogeForm" />
+  </form-beans>
+  <global-exceptions></global-exceptions>
+  <global-forwards></global-forwards>
+  <action-mappings>
+   <action path="/HogeAction" type="com.ayutaya.struts.HogeProcess"
+    name="HogeForm" scope="request">
+     <forward name="success" path="/struts/output.jsp" />
+    </action>
+  </action-mappings>
+</struts-config>

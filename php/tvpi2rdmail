@@ -1,0 +1,139 @@
+<?
+($tvpifile = $_GET["tvpi"]) || $tvpifile = "test.tvpi";
+//$tvpiurl = "";
+
+$pass = "hogefuga";
+$protect = true;
+
+$fromaddr = "Kiichiro NAKA <knaka@ayutaya.com>";
+$toaddr = "rd@ayutaya.com";
+$ccaddr = "Kiichiro NAKA <knaka@ayutaya.com>";
+
+$snames = array();
+$snames["NHK"] = "D011-1";
+$snames["NHKÁí¹ç"] = "D011-1";
+$snames["£Î£È£ËÁí¹ç"] = "D011-1";
+
+$snames["MX"] = "D091-1";
+$snames["£Í£Ø¥Æ¥ì¥Ó"] = "D091";
+$snames["ÅìµþMX¥Æ¥ì¥Ó"] = "D091";
+
+$snames["TBS"] = "D061";
+$snames["£Ô£Â£Ó"] = "D061";
+$snames["£Ô£Â£Ó¥Æ¥ì¥Ó"] = "D061";
+
+// -------------------------------------------------------------------
+
+$mimetype = "";
+$incharset = "sjis";
+$intcharset = "euc-jp";
+$outcharset = "ISO-2022-JP";
+
+$fd = fopen($tvpifile, "r");
+while (! feof($fd)) {
+  list($key, $val) = split(" *: *", trim(fgets($fd)), 2);
+  if ($key == "Content-type") {
+    foreach(split(" *; *", $val) as $elem) {
+      if ($elem == "application/x-tv-program-info") {
+        $mimetype = $elem;
+      } else {
+        list($subkey, $subval) = split("=", $elem);
+        if ($subkey == "charset") {
+          $incharset = $subval;
+        }
+      }
+    }
+    break;
+  }
+}
+fclose($fd);
+$statid = "";
+$fd = popen("iconv -f $incharset -t $intcharset < $tvpifile", "r");
+while (! feof($fd)) {
+  list($key, $val) = split(" *: *", trim(fgets($fd)), 2);
+  switch ($key) {
+    case "station": {
+      if (array_key_exists($val, $snames)) {
+        $statid = $snames[$val];
+      }
+      break;
+    }
+    case "year": {
+      $year = $val;
+      break;
+    }
+    case "month": {
+      $month = $val;
+      break;
+    }
+    case "date": {
+      $date = $val;
+      break;
+    }
+    case "start": {
+      $start = $val;
+      $startstr = ereg_replace(":", "", $start);
+      break;
+    }
+    case "end": {
+      $end = $val;
+      $endstr = ereg_replace(":", "", $end);
+      break;
+    }
+    case "program-title": {
+      $title = $val;
+      break;
+    }
+    case "program-subtitle": {
+      $subtitle = $val;
+      break;
+    }
+  }
+}
+pclose($fd);
+
+list($shour, $sminute) = split(":", $start);
+$sstamp = mktime($shour, $sminute, 0, $month, $date, $year);
+list($ehour, $eminute) = split(":", $end);
+$estamp = mktime($ehour, $eminute, 0, $month, $edate, $year);
+if ($sstamp > $estamp) {
+  $estamp = mktime($ehour, $eminute, 0, $month, $edate + 1, $year);
+}
+
+// The regulated stamps can be compared. You can add "30 minutes"
+
+if (1) {
+  $estamp = $estamp + (30 * 60);
+}
+
+echo sprintf("%s - %s\n",
+ strftime("%Y %m %d %H:%M", $sstamp),
+ strftime("%Y %m %d %H:%M", $estamp) );
+
+$endstr = strftime("%H%M", $estamp);
+
+//$fd = popen("iconv -f $intcharset -t $outcharset | /usr/sbin/sendmail -t -i", "w");
+$fd = popen("iconv -f $intcharset -t $outcharset | cat", "w");
+fputs($fd, "From: $fromaddr\n");
+if ($ccaddr) {
+  fputs($fd, "Cc: $ccaddr\n");
+}
+fputs($fd, "To: $toaddr\n");
+fputs($fd, "Content-Type: text/plain; charset=$outcharset\n");
+fputs($fd, "Subject: tvpi2rdmail ($year-$month-$date $startstr-$endstr)\n");
+fputs($fd, "User-Agent: tvpi2rdmail\n");
+fputs($fd, "\n");
+//fputs($fd, "open $pass prog add $year$month$date $startstr $endstr $statid YS VS A1 SH KY DN HN LS CN CMN CPN ELN RT1 RY\n");
+fputs($fd, "open $pass prog add $year$month$date $startstr $endstr $statid\n");
+$delim = "";
+if ($title) {
+  fputs($fd, "$delim$title");
+  $delim = "";
+}
+if ($subtitle) {
+  fputs($fd, "$delim$subtitle");
+  $delim = "";
+}
+fputs($fd, "\n");
+pclose($fd);
+?>

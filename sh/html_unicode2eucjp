@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo "knaka: GMail&#x306e;spam&#12501;&#12451;&#12523;&#12479;&#29575;&#12399;&#12289;95%&#12367;&#12425;&#12356;&#12363;&#12394;&#12290;" | \
+ perl -MEncode -p \
+  -e 's/&#x([0-9A-F]+);/encode("utf8", decode("utf16be", pack("H4", sprintf("%04X", hex($1)))))/gie;' \
+  -e 's/&#([0-9]+);/encode("utf8", decode("utf16be", pack("H4", sprintf("%04X", int($1)))))/ge;' | \
+ iconv -f utf-8 -t eucjp

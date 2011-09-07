@@ -1,0 +1,54 @@
+#!/bin/sh
+force=
+forceopt=
+if test "$1" = "--force"
+then
+  force=1
+  forceopt=--force
+fi
+for file in Makefile.am configure.in
+do
+  if ! test -r $file
+  then
+    cp orig/$file .
+  fi
+done
+\libtoolize --copy --force
+\gettextize $forceopt --intl --copy --no-changelog
+if ! test -r po/Makevars
+then
+  \cp -f po/Makevars.template po/Makevars
+fi
+if ! grep -q '\.c$' po/POTFILES.in
+then
+  \find tools/ -name "*.c" >> po/POTFILES.in
+fi
+if ! test -r po/LINGUAS
+then
+  echo "fr" >> po/LINGUAS
+  echo "ja" >> po/LINGUAS
+fi
+for file in fr.po ja.po
+do
+  if test -r orig/$file -a ! -r po/$file
+  then
+    cp orig/$file po/$file
+  fi
+done
+if test "$force" = "1"
+then
+  \cp -f /usr/share/gettext/gettext.h tools/
+fi
+aclocal
+autoheader
+for file in NEWS README AUTHORS ChangeLog
+do
+  if ! test -r $file
+  then
+    touch $file
+  fi
+done
+automake --force --add-missing --copy
+rpm -qf `which autoconf`
+autoconf --force
+./configure --prefix=/usr/

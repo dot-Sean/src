@@ -1,0 +1,16 @@
+#!/bin/bash
+
+diff -uNr /etc/X11/xorg.conf <(
+sed -f - /etc/X11/xorg.conf <<-EOF
+/Section.*"InputDevice".*/, /EndSection/ d
+EOF
+)
+
+diff -uNr /etc/X11/xorg.conf <(
+sed -f - /etc/X11/xorg.conf <<-EOF
+/Section.*"InputDevice".*/, /EndSection/ {
+  /jp/ d
+}
+EOF
+)
+

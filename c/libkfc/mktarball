@@ -1,0 +1,12 @@
+#!/bin/sh
+name=$1
+shift
+version=$1
+shift
+tarroot=$name-$version
+
+rm -fr $tarroot
+mkdir -p $tarroot
+tar cf - $* | (cd $tarroot; tar xf -)
+tar zcvf $name-$version.tar.gz $name-$version
+rm -fr $tarroot

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+foo() {
+  echo stdout
+  echo stderr 1>&2
+}
+
+i=0
+echo '-------- 0'
+foo
+echo '-------- 1'
+foo > /dev/null
+echo '-------- 2'
+foo 2> /dev/null
+echo '-------- 3'
+foo 1> /dev/null 2>&1
+echo '-------- 3.1'
+foo 2>&1 1> /dev/null
+echo '-------- 4 (Redirect all)'
+foo &> /dev/null
+echo '-------- 5'

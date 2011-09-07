@@ -1,0 +1,20 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: hello 1.0\n"
+"Report-Msgid-Bugs-To: knaka@ayutaya.com\n"
+"POT-Creation-Date: 2007-11-18 16:16+0100\n"
+"PO-Revision-Date: 2007-11-18 00:00+0000\n"
+"Last-Translator: Kiichiro NAKA <knaka@example.com>\n"
+"Language-Team: Kiichiro NAKA <knaka@example.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: tools/hello.c:20
+msgid "World"
+msgstr "世界"

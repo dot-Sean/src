@@ -1,0 +1,1693 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja">
+  <head>
+    <!---京=-->
+    <meta http-equiv="Content-Type" content=
+    "text/html; charset=utf-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content=
+    "text/javascript" />
+    <title>
+      世田谷区の天気 - Yahoo!天気情報
+    </title>
+    <meta name="description" content=
+    "Yahoo!天気情報は、市区町村の天気予報、世界の天気、警報・注意報および地震・津波などの防災情報、洗濯・紫外線・肌荒れなどの指数情報に加え、RSSやブログパーツも紹介しています。" />
+    <meta name="keywords" content=
+    "天気予報,天気情報,市区町村単位,ピンポイント,世界の天気,防災情報,指数情報,天気ガイド,レジャー天気,豆知識,用語集,RSS,ブログパーツ" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" href=
+    "http://i.yimg.jp/images/weather/css/master-yahoo.css" type=
+    "text/css" media="all" />
+    <link rel="stylesheet" href=
+    "http://i.yimg.jp/images/css/printexec.css" type="text/css"
+    media="print" />
+    <link rel="stylesheet" href=
+    "http://i.yimg.jp/images/weather/css/import.css" type=
+    "text/css" media="screen,print" />
+    <link rel="stylesheet" href=
+    "http://i.yimg.jp/images/weather/momiji/2008/yjw_momiji.css"
+    type="text/css" media="screen,print" />
+  </head>
+  <body class="yj950-2">
+    <!---wrapper start=-->
+    <div id="wrapper">
+      <!---header start=-->
+      <div id="header">
+        <span class="yj-guid"><a name="pagetop" id=
+        "pagetop"></a><img src="http://i.yimg.jp/images/clear.gif"
+        width="1" height="1" alt="このページの先頭です" /></span>
+        <span class="yj-skip"><a href="#contents-start"><img src=
+        "http://i.yimg.jp/images/clear.gif" alt="このページの本文へ" width=
+        "1" height="1" /></a></span> <!-- SpaceID=0 robot -->
+        <div id="masthead">
+          <div class="yjmth">
+            <div class="yjmthproplogoarea">
+              <a href=
+              "http://weather.yahoo.co.jp/weather/"><img id="ygmhlog"
+              src="http://i.yimg.jp/images/mh/weather.gif" width=
+              "235" height="40" alt="Yahoo!天気情報" name=
+              "ygmhlog" /></a>
+            </div>
+            <div class="yjmthloginarea">
+              <strong><a href=
+              "https://login.yahoo.co.jp/config/login?.src=yw&amp;lg=jp&amp;.intl=jp&amp;.done=http%3a//weather.yahoo.co.jp/weather/jp/13/4410/13112.html">
+              ログイン</a></strong><br />
+              IDでもっと便利に[ <a href=
+              "http://edit.yahoo.co.jp/config/eval_register?.intl=jp&amp;.src=yw&amp;new=1&amp;.done=http%3a//weather.yahoo.co.jp/weather/jp/13/4410/13112.html">
+              新規取得</a> ]
+            </div>
+            <div class="yjmthcmnlnkarea">
+              <a href="http://www.yahoo.co.jp/">Yahoo!
+              JAPAN</a> - <a href=
+              "http://help.yahoo.co.jp/help/jp/weather/">ヘルプ</a>
+            </div><br class="yjmthclear" />
+          </div>
+        </div><!---/#masthead end=-->
+        <!---AdSpace EMG=-->
+        <!-- SpaceID=0 robot -->
+        <!-- SpaceID=0 robot -->
+        <!-- SpaceID=0 robot -->
+        <!---/AdSpace EMG=-->
+      </div><!---お役立ち情報=-->
+      <div class="yngrouplink">
+        <span class="fss"><span style=
+        "color:#000000">お役立ち情報：</span> <a href=
+        "http://rd.yahoo.co.jp/media/weather/header_navi1/*http://rescue.yahoo.co.jp/">
+        災害情報</a> ・ <a href=
+        "http://rd.yahoo.co.jp/media/weather/header_navi2/*http://headlines.yahoo.co.jp/hl">
+        ニュース</a> ・ <a href=
+        "http://rd.yahoo.co.jp/media/carbonoffset/lead_module/top/weather/*http://carbonoffset.yahoo.co.jp/">
+        カーボンオフセット</a> ・ <a href=
+        "http://rd.yahoo.co.jp/media/weather/header_navi4/*http://tv.yahoo.co.jp/">
+        番組表</a></span>
+      </div><!---/お役立ち情報=-->
+      <hr class="separation" />
+      <!---contents start=-->
+      <div id="contents">
+        <div id="contents-header">
+          <div class="yjw_title_h1 yjw_clr">
+            <h1 class="yjM">
+              Yahoo!天気情報
+            </h1>
+            <div class="widebuttonarea">
+              <!-- SpaceID=0 robot -->
+            </div>
+          </div><!---WEATHER_SEARCH_TABLE=-->
+          <!---search_form.html■■■■================-->
+          <div class="yjw_pnts_search yjw_clr">
+            <form method="get" action=
+            "http://search.weather.yahoo.co.jp/bin/search">
+              <fieldset>
+                <p class="yjS">
+                  ピンポイント天気 <select name="pref">
+                    <option value="all">
+                      全国
+                    </option>
+                    <option value="1">
+                      北海道
+                    </option>
+                    <option value="2">
+                      青森県
+                    </option>
+                    <option value="3">
+                      岩手県
+                    </option>
+                    <option value="4">
+                      宮城県
+                    </option>
+                    <option value="5">
+                      秋田県
+                    </option>
+                    <option value="6">
+                      山形県
+                    </option>
+                    <option value="7">
+                      福島県
+                    </option>
+                    <option value="13" selected="selected">
+                      東京都
+                    </option>
+                    <option value="14">
+                      神奈川県
+                    </option>
+                    <option value="11">
+                      埼玉県
+                    </option>
+                    <option value="12">
+                      千葉県
+                    </option>
+                    <option value="8">
+                      茨城県
+                    </option>
+                    <option value="9">
+                      栃木県
+                    </option>
+                    <option value="10">
+                      群馬県
+                    </option>
+                    <option value="19">
+                      山梨県
+                    </option>
+                    <option value="15">
+                      新潟県
+                    </option>
+                    <option value="20">
+                      長野県
+                    </option>
+                    <option value="16">
+                      富山県
+                    </option>
+                    <option value="17">
+                      石川県
+                    </option>
+                    <option value="18">
+                      福井県
+                    </option>
+                    <option value="23">
+                      愛知県
+                    </option>
+                    <option value="21">
+                      岐阜県
+                    </option>
+                    <option value="22">
+                      静岡県
+                    </option>
+                    <option value="24">
+                      三重県
+                    </option>
+                    <option value="27">
+                      大阪府
+                    </option>
+                    <option value="28">
+                      兵庫県
+                    </option>
+                    <option value="26">
+                      京都府
+                    </option>
+                    <option value="25">
+                      滋賀県
+                    </option>
+                    <option value="29">
+                      奈良県
+                    </option>
+                    <option value="30">
+                      和歌山県
+                    </option>
+                    <option value="31">
+                      鳥取県
+                    </option>
+                    <option value="32">
+                      島根県
+                    </option>
+                    <option value="33">
+                      岡山県
+                    </option>
+                    <option value="34">
+                      広島県
+                    </option>
+                    <option value="35">
+                      山口県
+                    </option>
+                    <option value="36">
+                      徳島県
+                    </option>
+                    <option value="37">
+                      香川県
+                    </option>
+                    <option value="38">
+                      愛媛県
+                    </option>
+                    <option value="39">
+                      高知県
+                    </option>
+                    <option value="40">
+                      福岡県
+                    </option>
+                    <option value="41">
+                      佐賀県
+                    </option>
+                    <option value="42">
+                      長崎県
+                    </option>
+                    <option value="43">
+                      熊本県
+                    </option>
+                    <option value="44">
+                      大分県
+                    </option>
+                    <option value="45">
+                      宮崎県
+                    </option>
+                    <option value="46">
+                      鹿児島県
+                    </option>
+                    <option value="47">
+                      沖縄県
+                    </option>
+                  </select> 地名または郵便番号 <input type="text" size="20"
+                  name="p" /> <!--<INPUT TYPE=submit VALUE="検索">-->
+                   <input type="image" src=
+                  "http://i.yimg.jp/images/weather/common/yjw_button_search.gif"
+                  title="検索" alt="検索" id="yjw_button_search" />
+                </p>
+              </fieldset>
+            </form>
+            <p id="yjw_buttonarea">
+              <a href="/weather/public/rss.html"><img src=
+              "http://i.yimg.jp/images/weather/common/yjw_button_rss.gif"
+              width="113" height="24" alt="提供RSS" /></a> <a href=
+              "/weather/promo/blogparts/"><img src=
+              "http://i.yimg.jp/images/weather/common/yjw_button_blogparts.gif"
+              width="113" height="24" alt="ブログパーツ" /></a>
+            </p>
+          </div><!---search_form.html■■■■================-->
+          <!---/WEATHER_SEARCH_TABLE=-->
+          <!--- CAT_LINK_TABLE =-->
+          <div id="cat-pass">
+            <p>
+              <span class="yj-guid">現在位置：</span> <a href=
+              "/weather/">Yahoo!天気情報トップ</a> &gt; <a href=
+              "/weather/jp/kanto.html">関東・信越</a> &gt; <a href=
+              "/weather/jp/13/index.html">東京都</a> &gt; <a href=
+              "/weather/jp/13/4410.html">東京（東京）</a> &gt; 世田谷区
+            </p>
+          </div><!---/#cat-pass end=-->
+          <!--- CAT_LINK_TABLE =-->
+        </div><!---/#contents-header end=-->
+        <div id="contents-body">
+          <span class="yj-guid"><a name="contents-start" id=
+          "contents-start"></a> <img src=
+          "http://i.yimg.jp/images/clear.gif" alt="ここから本文です" width=
+          "1" height="1" /></span> <!---main start=-->
+           <!-- SpaceID=0 robot -->
+          <div id="main">
+            <!--- 追加 =-->
+            <!---INFOMATION_MODULE=-->
+            <!---/INFOMATION_MODULE=-->
+            <!--- 追加 =-->
+            <div class="yjw_main_md">
+              <!---pinpoint=-->
+              <div id="yjw_pinpoint">
+                <div class="yjw_title_h2 yjw_clr">
+                  <h2 class="yjMt">
+                    ピンポイント天気
+                  </h2><!--- 変更 =-->
+                  <p style="float:right;">
+                    <a href=
+                    "http://weather.yahoo.co.jp/weather/jp/13/4410/13112.html?pd=p13112">
+                    <img src=
+                    "http://i.yimg.jp/images/weather/general/personal/add_mypinpoint.gif"
+                    alt="パーソナル天気に追加" width="165" height="24"
+                    border="0" /></a>
+                  </p>
+                  <p class="yjSt yjw_note_h2">
+                    2008年11月24日　18時30分発表
+                  </p>
+                </div><!--- /変更 =-->
+                <div id="yjw_pinpoint_today">
+                  <!---Point=-->
+                  <h3>
+                    今日の天気 <span class="yjSt">- 11月24日(月)</span>
+                  </h3>
+                  <table border="1" cellpadding="3" cellspacing="0"
+                  class="yjw_table2" width="460">
+                    <tr valign="middle" align="center" bgcolor=
+                    "#E9EEFD">
+                      <td width="100" bgcolor="#EEEEEE">
+                        <small>時間</small>
+                      </td>
+                      <td bgcolor="#EEEEEE" width="45">
+                        <small><font color=
+                        "#999999">0時</font></small>
+                      </td>
+                      <td bgcolor="#EEEEEE" width="45">
+                        <small><font color=
+                        "#999999">3時</font></small>
+                      </td>
+                      <td bgcolor="#EEEEEE" width="45">
+                        <small><font color=
+                        "#999999">6時</font></small>
+                      </td>
+                      <td bgcolor="#EEEEEE" width="45">
+                        <small><font color=
+                        "#999999">9時</font></small>
+                      </td>
+                      <td bgcolor="#EEEEEE" width="45">
+                        <small><font color=
+                        "#999999">12時</font></small>
+                      </td>
+                      <td bgcolor="#EEEEEE" width="45">
+                        <small><font color=
+                        "#999999">15時</font></small>
+                      </td>
+                      <td bgcolor="#EEEEEE" width="45">
+                        <small><font color=
+                        "#999999">18時</font></small>
+                      </td>
+                      <td bgcolor="#E9EEFD" width="45">
+                        <small>21時</small>
+                      </td>
+                    </tr>
+                    <tr align="center" bgcolor="#FFFFFF">
+                      <td bgcolor="#EEEEEE">
+                        <small>天気</small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/pmoon_g.gif"
+                        border="0" width="30" height="30" alt=
+                        "晴れ" /><br />
+                        <small><font color=
+                        "#999999">晴れ</font></small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/pmoon_g.gif"
+                        border="0" width="30" height="30" alt=
+                        "晴れ" /><br />
+                        <small><font color=
+                        "#999999">晴れ</font></small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/psun_g.gif"
+                        border="0" width="30" height="30" alt=
+                        "晴れ" /><br />
+                        <small><font color=
+                        "#999999">晴れ</font></small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/pclouds_g.gif"
+                        border="0" width="30" height="30" alt=
+                        "曇り" /><br />
+                        <small><font color=
+                        "#999999">曇り</font></small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/pclouds_g.gif"
+                        border="0" width="30" height="30" alt=
+                        "曇り" /><br />
+                        <small><font color=
+                        "#999999">曇り</font></small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/prain_light_g.gif"
+                        border="0" width="30" height="30" alt=
+                        "弱雨" /><br />
+                        <small><font color=
+                        "#999999">弱雨</font></small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/prain_light_g.gif"
+                        border="0" width="30" height="30" alt=
+                        "弱雨" /><br />
+                        <small><font color=
+                        "#999999">弱雨</font></small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/prain_gusty.gif"
+                        border="0" width="30" height="30" alt=
+                        "強雨" /><br />
+                        <small>強雨</small>
+                      </td>
+                    </tr>
+                    <tr valign="middle" align="center" bgcolor=
+                    "#FFFFFF">
+                      <td bgcolor="#EEEEEE">
+                        <small>気温（℃）</small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">8</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">8</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">6</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">9</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">11</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">9</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">8</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#FF6600">9</font></small>
+                      </td>
+                    </tr>
+                    <tr valign="middle" align="center" bgcolor=
+                    "#FFFFFF">
+                      <td bgcolor="#EEEEEE">
+                        <small>湿度（％）</small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">---</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">---</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">---</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">---</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">---</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">---</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">---</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#009900">96</font></small>
+                      </td>
+                    </tr>
+                    <tr valign="middle" align="center" bgcolor=
+                    "#FFFFFF">
+                      <td bgcolor="#EEEEEE" nowrap="nowrap">
+                        <small>降水量（mm/h）</small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">0</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">0</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">0</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">0</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">0</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">0</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">4</font></small>
+                      </td>
+                      <td>
+                        <small>5</small>
+                      </td>
+                    </tr>
+                    <tr align="center" valign="top" bgcolor=
+                    "#FFFFFF">
+                      <td bgcolor="#EEEEEE">
+                        <small>風向<br />
+                        風速（m/s）<br /></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">静穏</font><br />
+                        <font color="#999999">0</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">静穏</font><br />
+                        <font color="#999999">0</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">静穏</font><br />
+                        <font color="#999999">0</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">南南西</font><br />
+                        <font color="#999999">1</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">静穏</font><br />
+                        <font color="#999999">0</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">静穏</font><br />
+                        <font color="#999999">0</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#999999">静穏</font><br />
+                        <font color="#999999">0</font></small>
+                      </td>
+                      <td>
+                        <small>東北東<br />
+                        1</small>
+                      </td>
+                    </tr>
+                  </table><!---/Point=-->
+                  <!---モノクロ表示の注意書き=-->
+                  <table border="0" cellpadding="0" cellspacing="2"
+                  width="100%">
+                    <tr valign="top">
+                      <td with="1%">
+                        <small>※</small>
+                      </td>
+                      <td width="99%">
+                        <small>モノクロ表示の部分は、予報ではなく、その時間の実際の天気です。</small>
+                      </td>
+                    </tr>
+                  </table><!---/モノクロ表示の注意書き=-->
+                </div><!---/yjw_pinpoint_today=-->
+                <div id="yjw_pinpoint_tomorrow">
+                  <!---Point=-->
+                  <h3>
+                    明日の天気 <span class="yjSt">- 11月25日(火)</span>
+                  </h3>
+                  <table border="1" cellpadding="3" cellspacing="0"
+                  class="yjw_table2" width="460">
+                    <tr valign="middle" align="center" bgcolor=
+                    "#E9EEFD">
+                      <td width="100" bgcolor="#EEEEEE">
+                        <small>時間</small>
+                      </td>
+                      <td bgcolor="#E9EEFD" width="45">
+                        <small>0時</small>
+                      </td>
+                      <td bgcolor="#E9EEFD" width="45">
+                        <small>3時</small>
+                      </td>
+                      <td bgcolor="#E9EEFD" width="45">
+                        <small>6時</small>
+                      </td>
+                      <td bgcolor="#E9EEFD" width="45">
+                        <small>9時</small>
+                      </td>
+                      <td bgcolor="#E9EEFD" width="45">
+                        <small>12時</small>
+                      </td>
+                      <td bgcolor="#E9EEFD" width="45">
+                        <small>15時</small>
+                      </td>
+                      <td bgcolor="#E9EEFD" width="45">
+                        <small>18時</small>
+                      </td>
+                      <td bgcolor="#E9EEFD" width="45">
+                        <small>21時</small>
+                      </td>
+                    </tr>
+                    <tr align="center" bgcolor="#FFFFFF">
+                      <td bgcolor="#EEEEEE">
+                        <small>天気</small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/prain_light.gif"
+                        border="0" width="30" height="30" alt=
+                        "弱雨" /><br />
+                        <small>弱雨</small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/pclouds.gif"
+                        border="0" width="30" height="30" alt=
+                        "曇り" /><br />
+                        <small>曇り</small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/pclouds.gif"
+                        border="0" width="30" height="30" alt=
+                        "曇り" /><br />
+                        <small>曇り</small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/psun.gif"
+                        border="0" width="30" height="30" alt=
+                        "晴れ" /><br />
+                        <small>晴れ</small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/psun.gif"
+                        border="0" width="30" height="30" alt=
+                        "晴れ" /><br />
+                        <small>晴れ</small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/psun.gif"
+                        border="0" width="30" height="30" alt=
+                        "晴れ" /><br />
+                        <small>晴れ</small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/pclouds.gif"
+                        border="0" width="30" height="30" alt=
+                        "曇り" /><br />
+                        <small>曇り</small>
+                      </td>
+                      <td>
+                        <img src=
+                        "http://i.yimg.jp/images/weather/general/forcast/pinpoint/pclouds.gif"
+                        border="0" width="30" height="30" alt=
+                        "曇り" /><br />
+                        <small>曇り</small>
+                      </td>
+                    </tr>
+                    <tr valign="middle" align="center" bgcolor=
+                    "#FFFFFF">
+                      <td bgcolor="#EEEEEE">
+                        <small>気温（℃）</small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#FF6600">9</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#FF6600">7</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#FF6600">7</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#FF6600">10</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#FF6600">14</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#FF6600">14</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#FF6600">11</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#FF6600">10</font></small>
+                      </td>
+                    </tr>
+                    <tr valign="middle" align="center" bgcolor=
+                    "#FFFFFF">
+                      <td bgcolor="#EEEEEE">
+                        <small>湿度（％）</small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#009900">96</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#009900">94</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#009900">88</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#009900">80</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#009900">58</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#009900">52</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#009900">62</font></small>
+                      </td>
+                      <td>
+                        <small><font color=
+                        "#009900">74</font></small>
+                      </td>
+                    </tr>
+                    <tr valign="middle" align="center" bgcolor=
+                    "#FFFFFF">
+                      <td bgcolor="#EEEEEE" nowrap="nowrap">
+                        <small>降水量（mm/h）</small>
+                      </td>
+                      <td>
+                        <small>4</small>
+                      </td>
+                      <td>
+                        <small>0</small>
+                      </td>
+                      <td>
+                        <small>0</small>
+                      </td>
+                      <td>
+                        <small>0</small>
+                      </td>
+                      <td>
+                        <small>0</small>
+                      </td>
+                      <td>
+                        <small>0</small>
+                      </td>
+                      <td>
+                        <small>0</small>
+                      </td>
+                      <td>
+                        <small>0</small>
+                      </td>
+                    </tr>
+                    <tr align="center" valign="top" bgcolor=
+                    "#FFFFFF">
+                      <td bgcolor="#EEEEEE">
+                        <small>風向<br />
+                        風速（m/s）<br /></small>
+                      </td>
+                      <td>
+                        <small>北東<br />
+                        1</small>
+                      </td>
+                      <td>
+                        <small>北西<br />
+                        1</small>
+                      </td>
+                      <td>
+                        <small>静穏<br />
+                        0</small>
+                      </td>
+                      <td>
+                        <small>北東<br />
+                        1</small>
+                      </td>
+                      <td>
+                        <small>東北東<br />
+                        1</small>
+                      </td>
+                      <td>
+                        <small>東<br />
+                        1</small>
+                      </td>
+                      <td>
+                        <small>東<br />
+                        1</small>
+                      </td>
+                      <td>
+                        <small>東<br />
+                        1</small>
+                      </td>
+                    </tr>
+                  </table><!---/Point=-->
+                </div><!---/yjw_pinpoint_tomorrow=-->
+                <!--- 検索 =-->
+                <!--- 変更 =-->
+                <div id="yjw_pinpoint_more2">
+                  <p>
+                    <span><b><a href=
+                    "http://search.weather.yahoo.co.jp/bin/search?pref=13&amp;jis=13112">
+                    世田谷区をさらに詳しく見る</a></b> | <b><a href=
+                    "http://rd.yahoo.co.jp/media/weather/pinpo/main_module01/?http://weather.yahoo.co.jp/weather/">
+                    天気情報トップ</a></b></span> <!--- /変更 =-->
+                  </p>
+                </div><!--- /検索 =-->
+              </div><!---/yjw_pinpoint=-->
+            </div><!---/yjw_main_md=-->
+            <div id="yjw_week" class="yjw_main_md">
+              <!---週間の天気=-->
+              <div class="yjw_title_h2 yjw_clr">
+                <h2 class="yjMt">
+                  週間の天気 <span class="yjSt">- 東京(東京)</span>
+                </h2>
+                <p class="yjSt yjw_note_h2">
+                  2008年11月24日　17時00分発表
+                </p>
+              </div>
+              <table border="1" cellpadding="2" cellspacing="0"
+              width="100%" class="yjw_table">
+                <tr valign="middle" align="center">
+                  <td bgcolor="#EEEEEE" width="10%">
+                    <small>日付</small><br />
+                    <img src="http://i.yimg.jp/images/clear.gif"
+                    width="50" height="1" />
+                  </td>
+                  <td bgcolor="#E9EEFD" width="15%">
+                    <small>11月26日<br />
+                    (水)</small>
+                  </td>
+                  <td bgcolor="#E9EEFD" width="15%">
+                    <small>11月27日<br />
+                    (木)</small>
+                  </td>
+                  <td bgcolor="#E9EEFD" width="15%">
+                    <small>11月28日<br />
+                    (金)</small>
+                  </td>
+                  <td bgcolor="#E9EEFD" width="15%">
+                    <small>11月29日<br />
+                    (土)</small>
+                  </td>
+                  <td bgcolor="#E9EEFD" width="15%">
+                    <small>11月30日<br />
+                    (日)</small>
+                  </td>
+                  <td bgcolor="#E9EEFD" width="15%">
+                    <small>12月1日<br />
+                    (月)</small>
+                  </td>
+                </tr>
+                <tr valign="middle" align="center">
+                  <td bgcolor="#EEEEEE" width="10%">
+                    <small>天気</small>
+                  </td>
+                  <td width="15%">
+                    <img src=
+                    "http://i.yimg.jp/images/weather/general/forcast/sun_clouds_st.gif"
+                    border="0" alt="晴時々曇" /><br />
+                    <small>晴時々曇</small>
+                  </td>
+                  <td width="15%">
+                    <img src=
+                    "http://i.yimg.jp/images/weather/general/forcast/clouds_rain_af.gif"
+                    border="0" alt="曇後雨" /><br />
+                    <small>曇後雨</small>
+                  </td>
+                  <td width="15%">
+                    <img src=
+                    "http://i.yimg.jp/images/weather/general/forcast/rain_sun_af.gif"
+                    border="0" alt="雨後晴" /><br />
+                    <small>雨後晴</small>
+                  </td>
+                  <td width="15%">
+                    <img src=
+                    "http://i.yimg.jp/images/weather/general/forcast/sun_clouds_st.gif"
+                    border="0" alt="晴時々曇" /><br />
+                    <small>晴時々曇</small>
+                  </td>
+                  <td width="15%">
+                    <img src=
+                    "http://i.yimg.jp/images/weather/general/forcast/sun_clouds_st.gif"
+                    border="0" alt="晴時々曇" /><br />
+                    <small>晴時々曇</small>
+                  </td>
+                  <td width="15%">
+                    <img src=
+                    "http://i.yimg.jp/images/weather/general/forcast/clouds_sun_st.gif"
+                    border="0" alt="曇時々晴" /><br />
+                    <small>曇時々晴</small>
+                  </td>
+                </tr>
+                <tr valign="middle" align="center" bgcolor=
+                "#FFFFFF">
+                  <td bgcolor="#EEEEEE" width="10%">
+                    <small>気温（℃）</small>
+                  </td>
+                  <td width="15%">
+                    <small><font color="#FF3300">14</font><br />
+                    <font color="#0066FF">8</font></small>
+                  </td>
+                  <td width="15%">
+                    <small><font color="#FF3300">14</font><br />
+                    <font color="#0066FF">8</font></small>
+                  </td>
+                  <td width="15%">
+                    <small><font color="#FF3300">15</font><br />
+                    <font color="#0066FF">9</font></small>
+                  </td>
+                  <td width="15%">
+                    <small><font color="#FF3300">15</font><br />
+                    <font color="#0066FF">8</font></small>
+                  </td>
+                  <td width="15%">
+                    <small><font color="#FF3300">16</font><br />
+                    <font color="#0066FF">8</font></small>
+                  </td>
+                  <td width="15%">
+                    <small><font color="#FF3300">16</font><br />
+                    <font color="#0066FF">9</font></small>
+                  </td>
+                </tr>
+                <tr valign="middle" align="center" bgcolor=
+                "#FFFFFF">
+                  <td bgcolor="#EEEEEE" width="10%">
+                    <small>降水<br />
+                    確率（％）</small>
+                  </td>
+                  <td width="15%">
+                    <small>10</small>
+                  </td>
+                  <td width="15%">
+                    <small>50</small>
+                  </td>
+                  <td width="15%">
+                    <small>70</small>
+                  </td>
+                  <td width="15%">
+                    <small>10</small>
+                  </td>
+                  <td width="15%">
+                    <small>10</small>
+                  </td>
+                  <td width="15%">
+                    <small>20</small>
+                  </td>
+                </tr>
+              </table><!---/週間の天気=-->
+              <!---週間の天気注意書き=-->
+              <table border="0" cellpadding="0" cellspacing="2"
+              width="100%">
+                <tr valign="top">
+                  <td with="1%">
+                    <small>※</small>
+                  </td>
+                  <td width="99%">
+                    <small>週間天気の気温については最寄の観測地点をもとにしているため、一部実際の地域の温度と異なる場合があります。</small>
+                  </td>
+                </tr>
+              </table><!---/週間の天気注意書き=-->
+            </div><!--- 紅葉特集2008 =-->
+            <!---紅葉特集誘導=-->
+            <div class="yjw_main_md">
+              <div class="yjw_title_momiji" style=
+              "margin-bottom:5px;">
+                <h2>
+                  <a href=
+                  "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/"
+                  target="momizi">紅葉特集2008 みんなでつくる紅葉情報</a>
+                </h2>
+                <p class="yjSt yjw_note_h2">
+                  2008年11月24日　17時00分発表
+                </p>
+              </div>
+              <div class="yjw_main_md" style=
+              "border:1px solid #fdc0ba">
+                <div style="padding:5px 7px;">
+                  <table cellpadding="0" cellspacing="0" border=
+                  "0">
+                    <tr>
+                      <td width="1%" valign="top">
+                        <table width="100%" border="0" cellspacing=
+                        "0" cellpadding="0">
+                          <tr>
+                            <td align="center" width="1%">
+                              <a href=
+                              "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/detail/30109.html"
+                              target="momizi"><img src=
+                              "http://i.yimg.jp/images/evt/kouyou2008/spot/30109_s.jpg"
+                              width="90" height="67" alt="鳩の巣渓谷の紅葉"
+                              vspace="3" border="0" /></a>
+                            </td>
+                            <td>
+                              <img src=
+                              "http://i.yimg.jp/images/clear.gif"
+                              width="5" height="" alt="" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <a href=
+                              "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/detail/30109.html"
+                              class="yjM" target=
+                              "momizi"><small>鳩の巣渓谷の紅葉</small></a>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td valign="top">
+                        <table width="100%" border="0" cellspacing=
+                        "0" cellpadding="0">
+                          <tr>
+                            <td align="center" width="1%">
+                              <a href=
+                              "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/detail/30109.html"
+                              target="momizi"><img src=
+                              "http://i.yimg.jp/images/evt/common/kouyou/icon10_s.gif"
+                              width="22" height="22" alt="紅葉見ごろ"
+                              vspace="3" border="0" /></a>
+                            </td>
+                            <td>
+                              <img src=
+                              "http://i.yimg.jp/images/clear.gif"
+                              width="5" height="" alt="" />
+                            </td>
+                            <td width="49%" align="left" valign=
+                            "middle">
+                              <a href=
+                              "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/detail/30109.html"
+                              class="yjM" target=
+                              "momizi">鳩の巣渓谷の紅葉</a>
+                            </td>
+                            <td align="center" width="1%">
+                              <a href=
+                              "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/detail/30156.html"
+                              target="momizi"><img src=
+                              "http://i.yimg.jp/images/evt/common/kouyou/icon10_s.gif"
+                              width="22" height="22" alt="紅葉見ごろ"
+                              vspace="3" border="0" /></a>
+                            </td>
+                            <td>
+                              <img src=
+                              "http://i.yimg.jp/images/clear.gif"
+                              width="5" height="" alt="" />
+                            </td>
+                            <td width="49%" align="left" valign=
+                            "middle">
+                              <a href=
+                              "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/detail/30156.html"
+                              class="yjM" target=
+                              "momizi">野山北・六道山公園の紅葉</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td align="center" width="1%">
+                              <a href=
+                              "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/detail/30155.html"
+                              target="momizi"><img src=
+                              "http://i.yimg.jp/images/evt/common/kouyou/icon10_s.gif"
+                              width="22" height="22" alt="紅葉見ごろ"
+                              vspace="3" border="0" /></a>
+                            </td>
+                            <td>
+                              <img src=
+                              "http://i.yimg.jp/images/clear.gif"
+                              width="5" height="" alt="" />
+                            </td>
+                            <td width="49%" align="left" valign=
+                            "middle">
+                              <a href=
+                              "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/detail/30155.html"
+                              class="yjM" target=
+                              "momizi">陵南公園の紅葉</a>
+                            </td>
+                            <td align="center" width="1%">
+                              <a href=
+                              "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/detail/30117.html"
+                              target="momizi"><img src=
+                              "http://i.yimg.jp/images/evt/common/kouyou/icon10_s.gif"
+                              width="22" height="22" alt="紅葉見ごろ"
+                              vspace="3" border="0" /></a>
+                            </td>
+                            <td>
+                              <img src=
+                              "http://i.yimg.jp/images/clear.gif"
+                              width="5" height="" alt="" />
+                            </td>
+                            <td width="49%" align="left" valign=
+                            "middle">
+                              <a href=
+                              "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/detail/30117.html"
+                              class="yjM" target=
+                              "momizi">光が丘公園の紅葉</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td align="center" width="1%">
+                              <a href=
+                              "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/detail/30152.html"
+                              target="momizi"><img src=
+                              "http://i.yimg.jp/images/evt/common/kouyou/icon10_s.gif"
+                              width="22" height="22" alt="紅葉見ごろ"
+                              vspace="3" border="0" /></a>
+                            </td>
+                            <td>
+                              <img src=
+                              "http://i.yimg.jp/images/clear.gif"
+                              width="5" height="" alt="" />
+                            </td>
+                            <td width="49%" align="left" valign=
+                            "middle">
+                              <a href=
+                              "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/detail/30152.html"
+                              class="yjM" target=
+                              "momizi">小金井公園の紅葉</a>
+                            </td>
+                            <td align="center" width="1%">
+                              <a href=
+                              "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/detail/30150.html"
+                              target="momizi"><img src=
+                              "http://i.yimg.jp/images/evt/common/kouyou/icon10_s.gif"
+                              width="22" height="22" alt="紅葉見ごろ"
+                              vspace="3" border="0" /></a>
+                            </td>
+                            <td>
+                              <img src=
+                              "http://i.yimg.jp/images/clear.gif"
+                              width="5" height="" alt="" />
+                            </td>
+                            <td width="49%" align="left" valign=
+                            "middle">
+                              <a href=
+                              "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/detail/30150.html"
+                              class="yjM" target=
+                              "momizi">東大和南公園の紅葉</a>
+                            </td>
+                          </tr>
+                        </table>
+                        <p class="yjSt yjw_note_arrow">
+                          <strong><a href=
+                          "http://rd.yahoo.co.jp/media/weather/open/momizi/*http://kouyou.yahoo.co.jp/spot/list/index13.html"
+                          target="momizi">他の紅葉名所も見る</a></strong>
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div><!---/紅葉特集誘導=-->
+            <!--- /紅葉特集2008 =-->
+            <script type="text/javascript" language="javascript">
+//<![CDATA[
+            yjaxc_ad_ds='tmpl_weather_ams_005_eucjp';yjaxc_ad_id='2077740051';
+            //]]>
+            </script> <script type="text/javascript" language=
+            "javascript" src=
+            "http://yjaxc.yahoo.co.jp/js/yjaxc.js">
+</script>
+            <div class="yjw_title_h2 yjw_clr">
+              <h2 class="yjMt">
+                レジャー情報
+              </h2>
+            </div>
+            <table border="0" cellpadding="3" cellspacing="0"
+            width="100%">
+              <tr>
+                <td>
+                  <img src="http://i.yimg.jp/images/clear.gif"
+                  width="1" />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <small>レジャーの目的にあわせた、もっと詳しいピンポイント天気がご覧になれます。</small>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <small><a href=
+                  "/weather/jp/leisure/airport/">空港</a> | <a href=
+                  "/weather/jp/leisure/golf/">ゴルフ場</a> | <a href=
+                  "/weather/jp/leisure/tsuri/">釣り</a> | <a href=
+                  "/weather/jp/leisure/autocamp/">キャンプ場</a> |
+                  <a href="/weather/jp/leisure/marine/">マリン</a> |
+                  <a href="/weather/jp/leisure/baseball/">野球場</a> |
+                  <a href="/weather/jp/leisure/soccer/">サッカー場</a> |
+                  <a href=
+                  "/weather/jp/leisure/amusement/">テーマパーク</a> |
+                  <a href=
+                  "/weather/jp/leisure/horse/">競馬場</a></small>
+                </td>
+              </tr>
+            </table><!---/pinpoint=-->
+            <!--- RELATED_CATEGORY -->
+            <!---PROMOTION_LINK_START=-->
+            <!---div class="yjw_sub_md_lined"=-->
+            <div>
+              <table cellpadding="1" cellspacing="0" border="0"
+              bgcolor="#FFFFFF" width="100%">
+                <tr>
+                  <td align="left">
+                    <table cellpadding="2" cellspacing="0" border=
+                    "0" width="100%">
+                      <tr valign="top" bgcolor="#EEEEEE">
+                        <td colspan="4">
+                          <b><small>Yahoo!サービス</small></b>
+                        </td>
+                      </tr><!---Yahoo!動画=-->
+                      <tr>
+                        <td colspan="4">
+                          <table border="0" cellpadding="2"
+                          cellspacing="0" width="100%">
+                            <tr bgcolor="#FFFFFF" valign="top">
+                              <td width="1%">
+                                <a href=
+                                "http://rd.yahoo.co.jp/media/weather/top/movie/?http://streaming.yahoo.co.jp/p/t/00212/v00580/">
+                                <img src=
+                                "http://i.yimg.jp/images/weather/eten/eten_movie.jpg"
+                                width="80" height="60" alt=
+                                "e-天気.net" /></a>
+                              </td>
+                              <td width="49%">
+                                <small><a href=
+                                "http://rd.yahoo.co.jp/media/weather/top/movie/?http://streaming.yahoo.co.jp/p/t/00212/v00580/">
+                                e-天気.net</a><br />
+                                ＴＶでおなじみの気象予報士をはじめ、DJ、若手俳優やお天気おねえさんらがナビゲートするお天気番組。</small>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="4">
+                          <div class="yjw_border" style=
+                          "margin:0 5px;"></div>
+                        </td>
+                      </tr><!---/Yahoo!動画=-->
+                      <tr bgcolor="#FFFFFF">
+                        <td width="1%">
+                          <a href=
+                          "http://rd.yahoo.co.jp/insurance/weather1/evt=75781/?http://biz.yahoo.co.jp/insurance/estimate.html">
+                          <img src=
+                          "http://i.yimg.jp/images/insurance/jp_ins28.gif"
+                          width="28" height="28" border="0" alt=
+                          "Yahoo!" /></a>
+                        </td>
+                        <td width="49%">
+                          <small><a href=
+                          "http://rd.yahoo.co.jp/insurance/weather1/evt=75781/?http://biz.yahoo.co.jp/insurance/estimate.html">
+                          Y!ポイント獲得！　自動車保険</a></small>
+                        </td><!--- 20080305pets =-->
+                        <td width="1%">
+                          <a href=
+                          "http://rd.yahoo.co.jp/pets/from/weather1/*http://pets.yahoo.co.jp/">
+                          <img src=
+                          "http://i.yimg.jp/images/sicons/pets28.gif"
+                          width="28" height="28" border="0" alt=
+                          "Yahoo!ペット" /></a>
+                        </td>
+                        <td width="49%">
+                          <small><a href=
+                          "http://rd.yahoo.co.jp/pets/from/weather1/*http://pets.yahoo.co.jp/">
+                          充実したペット生活のための情報が満載！</a></small>
+                        </td><!--- /20080305pets =-->
+                      </tr>
+                      <tr bgcolor="#FFFFFF">
+                        <td width="1%">
+                          <a href=
+                          "http://rd.yahoo.co.jp/weather/demae/?http://delivery.gourmet.yahoo.co.jp/">
+                          <img src=
+                          "http://i.yimg.jp/images/weather/top_module/genre_007.gif"
+                          width="28" height="28" border="0" alt=
+                          "Yahoo!グルメ" /></a>
+                        </td>
+                        <td width="49%">
+                          <small><a href=
+                          "http://rd.yahoo.co.jp/weather/demae/?http://delivery.gourmet.yahoo.co.jp/">
+                          雨で外出できない時は便利な出前注文！</a></small>
+                        </td>
+                        <td width="1%"></td>
+                        <td width="49%"></td>
+                      </tr>
+                      <tr>
+                        <td colspan="4">
+                          <div class="yjw_border" style=
+                          "margin:0 5px;"></div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="4">
+                          <table border="0" cellpadding="3"
+                          cellspacing="0" width="100%">
+                            <tr valign="top">
+                              <td width="50%">
+                                <b><small>調べる</small></b>
+                              </td>
+                              <td width="50%" valign="top">
+                                <b><small>集まる</small></b>
+                              </td>
+                            </tr>
+                            <tr bgcolor="#FFFFFF" valign="top">
+                              <td nowrap="nowrap">
+                                <small>・カテゴリ</small><br />
+                                <small>　- 地域</small><br />
+                                <small>　　- <a href=
+                                "http://dir.yahoo.co.jp/Regional/Japanese_Regions/Kanto/Tokyo/">
+                                東京都</a></small><br />
+                                <small>・<a href=
+                                "http://transit.yahoo.co.jp/">路線情報</a></small><br />
+
+                                <small>・地図</small><br />
+                                <small>　- <a href=
+                                "http://map.yahoo.co.jp/address?ac=13">
+                                東京都</a></small>
+                              </td>
+                              <td nowrap="nowrap">
+                                <small>・掲示板</small><br />
+                                <small>　- <a href=
+                                "http://messages.yahoo.co.jp/yahoo/Regional/Japanese_Regions/Kanto/Tokyo/index.html">
+                                東京都</a></small><br />
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="4">
+                          <div class="yjw_border" style=
+                          "margin:0 5px;"></div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div><!---/PROMOTION_LINK_END=-->
+            <!--- /RELATED_CATEGORY -->
+            <!--- AD SQB =-->
+            <!-- SpaceID=0 robot -->
+            <!--- /AD SQB =-->
+            <!---/MAIN_CONTENTS_table=-->
+          </div><!---/#main end=-->
+          <!---/main end=-->
+          <!---RIGHT_COLUMN=-->
+          <!---sub start=-->
+          <div id="sub">
+            <!-- SpaceID=0 robot -->
+            <!--- ==========グローバルナビゲーション========== =-->
+            <div class="yjw_sub_md_lined">
+              <div class="yjw_title_h2">
+                <h2 class="yjM">
+                  全国エリアの情報
+                </h2>
+              </div><!--- 天気トップ =-->
+              <dl class="yjw_navi yjw_clr yjSt">
+                <dd>
+                  <table cellpadding="0" cellspacing="0" border="0"
+                  style="margin:5px;">
+                    <tr>
+                      <td class="s115">
+                        <strong><a href=
+                        "http://rd.yahoo.co.jp/media/weather/pinpo/right_module01/?http://weather.yahoo.co.jp/weather/">
+                        天気情報トップ</a></strong>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl><!--- 防災情報 =-->
+              <dl class="yjw_navi yjw_clr yjSt">
+                <dt>
+                  防災情報
+                </dt>
+                <dd id="disaster01">
+                  <a href=
+                  "http://typhoon.yahoo.co.jp/weather/jp/keihou/">警報・注意報</a>
+                </dd>
+                <dd id="disaster02">
+                  <a href=
+                  "http://typhoon.yahoo.co.jp/weather/jp/earthquake/">
+                  地震</a>
+                </dd>
+                <dd id="disaster03">
+                  <a href=
+                  "http://typhoon.yahoo.co.jp/weather/jp/tsunami/">津波</a>
+                </dd>
+                <dd id="disaster04">
+                  <a href=
+                  "http://typhoon.yahoo.co.jp/weather/jp/volcano/">火山</a>
+                </dd>
+                <dd id="disaster05">
+                  <a href=
+                  "http://typhoon.yahoo.co.jp/weather/jp/typhoon/typha.html">
+                  台風</a>
+                </dd>
+              </dl><!--- 天気ガイド =-->
+              <dl class="yjw_navi yjw_clr yjSt">
+                <dt>
+                  天気ガイド
+                </dt>
+                <dd id="guide01">
+                  <a href=
+                  "/weather/jp/images/satellite.html">衛星画像</a>
+                </dd>
+                <dd id="guide02">
+                  <a href="/weather/jp/images/chart.html">天気図</a>
+                </dd>
+                <dd id="guide03">
+                  <a href="/weather/amedas/">アメダス</a>
+                </dd>
+                <dd id="guide04">
+                  <a href="/weather/long/">長期予報</a>
+                </dd>
+                <dd id="guide05">
+                  <a href="/weather/raincloud/">雨雲の動き</a>
+                </dd>
+                <dd id="guide06">
+                  <a href="/weather/wave/">波予測</a>
+                </dd>
+                <dd id="guide07">
+                  <a href="/weather/rainsnow/">雨雪判別</a>
+                </dd>
+                <dd id="guide08">
+                  <a href="/weather/frost/">霜予測</a>
+                </dd>
+                <dd id="guide09">
+                  <a href="/weather/jp/past/">過去の天気</a>
+                </dd>
+              </dl><!--- 世界の天気 =-->
+              <dl class="yjw_navi yjw_clr yjSt">
+                <dt>
+                  <a href="/weather/world/">世界の天気</a>
+                </dt>
+                <dd>
+                  <table border="1" cellpadding="2" class=
+                  "yjw_table" width="98%">
+                    <thead>
+                      <tr class="yjSt">
+                        <th width="25%" align="center">
+                          <font color="#000000">ニューヨーク</font>
+                        </th>
+                        <th width="25%" align="center">
+                          <font color="#000000">パリ</font>
+                        </th>
+                        <th width="25%" align="center">
+                          <font color="#000000">ロンドン</font>
+                        </th>
+                        <th width="25%" align="center">
+                          <font color="#000000">上海</font>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td width="25%" align="center">
+                          <img src=
+                          "http://i.yimg.jp/images/weather/general/world/clouds.gif"
+                          border="0" alt="曇り" />
+                        </td>
+                        <td width="25%" align="center">
+                          <img src=
+                          "http://i.yimg.jp/images/weather/general/world/sun.gif"
+                          border="0" alt="晴れ" />
+                        </td>
+                        <td width="25%" align="center">
+                          <img src=
+                          "http://i.yimg.jp/images/weather/general/world/sun.gif"
+                          border="0" alt="晴れ" />
+                        </td>
+                        <td width="25%" align="center">
+                          <img src=
+                          "http://i.yimg.jp/images/weather/general/world/sun.gif"
+                          border="0" alt="晴れ" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="25%" align="center">
+                          <span class=
+                          "highest">9</span>/<span class=
+                          "lowest">1</span>
+                        </td>
+                        <td width="25%" align="center">
+                          <span class=
+                          "highest">9</span>/<span class=
+                          "lowest">0</span>
+                        </td>
+                        <td width="25%" align="center">
+                          <span class=
+                          "highest">10</span>/<span class=
+                          "lowest">3</span>
+                        </td>
+                        <td width="25%" align="center">
+                          <span class=
+                          "highest">17</span>/<span class=
+                          "lowest">6</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </dd>
+              </dl><!--- 全国の情報 =-->
+              <dl class="yjw_navi yjw_clr yjSt">
+                <dt>
+                  天気関連動画
+                </dt>
+                <dd>
+                  <!---全国概況=-->
+                  <p>
+                    <font color="#000000"><b>全国概況</b>（WMP）</font>
+                    <img src=
+                    "http://i.yimg.jp/images/common/tv.gif" width=
+                    "16" height="16" alt="動画" hspace="5" />
+                    <a href="http://rd.yahoo.co.jp/media/weather/pinpo/right_module02/?http://news.bcst.yahoo.co.jp/weather.asx?cid=daily-2008-11-24-000-001">
+                    300kbps</a> | <a href=
+                    "http://rd.yahoo.co.jp/media/weather/pinpo/right_module03/?http://news.bcst.yahoo.co.jp/weather.asx?cid=daily-2008-11-24-000-002">
+                    1Mbps</a>
+                  </p>
+                </dd>
+              </dl>
+              <dl class="yjw_navi yjw_clr yjSt">
+                <dt>
+                  ブログ
+                </dt>
+                <dd>
+                  <!---blog=-->
+                  <p>
+                    <b><a href=
+                    "http://rd.yahoo.co.jp/media/weather/pinpo/right_module05/?http://blogs.yahoo.co.jp/wth_map">
+                    チーム森田の“天気で斬る！”</a></b>
+                  </p>
+                </dd>
+              </dl>
+              <dl class="yjw_navi yjw_clr yjSt">
+                <dt>
+                  天気に詳しくなろう
+                </dt>
+                <dd id="guide05">
+                  <a href=
+                  "http://rd.yahoo.co.jp/media/weather/pinpo/right_module06/?http://weather.yahoo.co.jp/weather/mame/">
+                  豆知識</a>
+                </dd>
+                <dd id="guide06">
+                  <a href=
+                  "http://rd.yahoo.co.jp/media/weather/pinpo/right_module07/?http://weather.yahoo.co.jp/weather/word/">
+                  用語集</a>
+                </dd>
+              </dl>
+            </div><!-- SpaceID=0 robot -->
+            <!--- 変更 =-->
+            <!--- contents match =-->
+            <div class="yjw_sub_md">
+              <script type="text/javascript" src=
+              "http://yjaxc.yahoo.co.jp/oi?t=j&amp;s=weather_oj_cm_lmdl&amp;i=2077740051&amp;u=http%3a//weather.yahoo.co.jp/weather/jp/13/4410/13112.html">
+</script>
+            </div><!--- /contents match =-->
+            <!---mobile_module=-->
+            <div class="yjw_sub_md_lined">
+              <div class="yjw_title_h2">
+                <h2 class="yjM">
+                  ケータイで天気情報を見る
+                </h2>
+              </div><!---QR=-->
+              <table border="0" cellpadding="0" cellspacing="5"
+              width="100%">
+                <tr>
+                  <td align="center" width="1%">
+                    <a href=
+                    "http://rd.yahoo.co.jp/mobile/qr/weather/top/?http://weather.yahoo.co.jp/weather/promo/mobile/">
+                    <img src=
+                    "http://i.yimg.jp/images/weather/mobile/qrcode_top.gif"
+                    alt="モバイル版Yahoo!天気情報にアクセス！" border="0" /></a>
+                  </td>
+                  <td>
+                    <p class="yjSt" style=
+                    "display:block;text-align:center;">
+                      <a href=
+                      "http://rd.yahoo.co.jp/mobile/qr/weather/top/?http://mobile.yahoo.co.jp/service/know.html#weather">
+                      http://weather.mobile.yahoo.co.jp/</a>
+                    </p>
+                    <p class="yjS s130 yjw_bg_gray" style=
+                    "text-align:center;margin:5px">
+                      モバイル版Yahoo!天気情報に<br />
+                      アクセス！ <a href=
+                      "http://rd.yahoo.co.jp/mobile/qr/weather/top/?http://weather.yahoo.co.jp/weather/promo/mobile/">
+                      説明を見る</a>
+                    </p>
+                  </td>
+                </tr>
+              </table><!---/QR=-->
+              <div class="yjw_border_s"></div><!---m@mail=-->
+              <p class="yjS s130" style=
+              "text-align:center;margin:2px;font-weight:bold;">
+                URLを自分の携帯へ送る
+              </p>
+              <p class="yjS s130" style=
+              "text-align:center;margin:2px;">
+                <span style=
+                "font-weight:bold;color:#6187ff">m@yahoo.jp</span>へ、本文に<span style="font-weight:bold;color:#6187ff;">「天気」</span>と書いて送ってください（件名は入力不要です）。モバイル版天気情報のURLが記載されたメールが返信されます。
+              </p><!---/m@mail=-->
+              <div class="yjw_border_s"></div><!---mailto=-->
+              <p class="yjS s130" style=
+              "text-align:center;margin:2px;font-weight:bold;">
+                URLを友だちの携帯へ送る
+              </p>
+              <p class="yjS s130" style=
+              "text-align:center;margin:2px;">
+                <img src=
+                "http://i.yimg.jp/images/mobile/common/phonemail.gif"
+                width="30" height="19" alt="URL送信" border="0"
+                style="vertical-align:bottom;margin:0 2px;" /><strong><a href="http://mtf.yahoo.co.jp/mailto?prop=mobile&amp;locale=jp&amp;title=Yahoo%21%A5%E2%A5%D0%A5%A4%A5%EB+-+Yahoo%21%C5%B7%B5%A4&amp;url=http%3a%2f%2fweather.mobile.yahoo.co.jp%2f&amp;h1=http%3a//weather.yahoo.co.jp/weather/index.html">URLをケータイに送信</a></strong><br />
+
+                <span class="yjSt" style=
+                "display:block;text-align:center;color:#666666;">（Yahoo!
+                JAPAN IDでのログインが必要です）</span>
+              </p><!---mailto=-->
+            </div><!---/mobile_module=-->
+            <!--- /変更 =-->
+            <!-- SpaceID=0 robot -->
+            <!-- SpaceID=0 robot -->
+          </div><!---/sub end=-->
+          <!---/RHIGT_COLUMN=-->
+        </div><!---/#contents-body end=-->
+        <div id="contents-footer">
+          <span class="yj-guid"><img src=
+          "http://i.yimg.jp/images/clear.gif" width="1" height="1"
+          alt="本文はここまでです" /></span> <span class="yj-skip"><a href=
+          "#pagetop"><img src="http://i.yimg.jp/images/clear.gif"
+          alt="このページの先頭へ" width="1" height="1" /></a></span>
+        </div><!---/#contents-footer end=-->
+      </div><!---/#contents end=-->
+      <!---/contents end=-->
+      <!---footer start=-->
+      <div id="footer">
+        <address>
+          <a href=
+          "http://help.yahoo.co.jp/help/jp/weather/">ヘルプ・お問い合わせ</a>
+          - <a href=
+          "http://rd.yahoo.co.jp/media/weather/footer/feedback/?http://ms.yahoo.co.jp/bin/yadv-info/feedback/">
+          ご意見・ご要望</a><br />
+          Copyright (C) 2008 Japan Weather Association All Rights
+          Reserved.<br />
+          Copyright (C) 2008 Yahoo Japan Corporation. All Rights
+          Reserved.
+        </address>
+      </div><!---/footer end=-->
+    </div><!---/#wrapper end=-->
+    <!---/wrapper end=-->
+    <!-- www23.weath.bbt.yahoo.co.jp uncompressed Tue Nov 25 02:20:02 JST 2008 -->
+  </body>
+</html>
+

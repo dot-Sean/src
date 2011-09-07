@@ -1,0 +1,35 @@
+#!/usr/bin/env perl
+
+sub usage {
+  my ($ret) = @_;
+  print <<"EOF";
+Put the usage here.
+EOF
+  exit($ret);
+}
+
+if (0) {
+  require "getopts.pl";
+  &Getopts('ab:c') || &usage(1);
+}
+
+@args = [];
+
+sub hoge {
+  my ($arg) = @_;
+  print $arg . "\n";
+  @args = @args + $arg;
+}
+
+use Getopt::Long;
+&GetOptions(
+ "alpha|a"  => \$params{'alpha'},
+ "beta|b=s" => \$params{'beta'}, # string
+ "gamma|c"  => \$params{'gamma'},
+ "dummy"    => \$params{'dummy'},
+ "<>"       => \&hoge ) || &usage("hoge" => "fuga");
+
+print "alpha = " . $params{'alpha'} . "\n";
+print "beta = "  . $params{'beta'}  . "\n";
+print "gamma = " . $params{'gamma'} . "\n";
+print $args[0], $args[1];

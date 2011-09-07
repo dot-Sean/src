@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="EUC-JP"?>
+<project default="bf">
+  <property name="sdir" value="./"/>
+  <property name="cdir" value="./"/>
+  <target name="cdir" description="バイナリ dest 作成">
+    <mkdir dir="${cdir}"/>
+  </target>
+  <target name="bf" depends="cdir" description="バイナリ作成">
+    <javac srcdir="${sdir}" destdir="${cdir}"/>
+  </target>
+  <target name="test">
+    <java classname="BinaryFlips" fork="true">
+      <arg value="hoge"/>
+      <classpath>
+        <pathelement path="./"/>
+      </classpath>
+    </java>
+  </target>
+  <!-- <target name="clean">
+    <delete dir="${cdir}"/>
+  </target> -->
+</project>
