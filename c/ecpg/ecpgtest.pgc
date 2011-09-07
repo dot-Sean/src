@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+
+exec sql include sqlca;
+
+static void error_exit () {
+   fprintf(stderr, "PostgreSQL error : %d[%.*s]\n",
+           sqlca.sqlcode, sqlca.sqlerrm.sqlerrml, sqlca.sqlerrm.sqlerrmc);
+   fflush(stderr);
+
+   exec sql whenever sqlerror continue;
+   exec sql rollback;
+   exec sql disconnect;
+
+   exit(1);
+}
+
+void
+handler () {
+    exec sql begin declare section;
+    char ver[256];
+    exec sql end declare section;
+    //exec sql select version();
+    exec sql whenever sqlerror do error_exit();
+    //exec sql begin;
+    //exec sql select version() into :ver;
+    //exec sql end;
+    //exec sql disconnect all;
+    exit (0);
+}
+
+int
+main (
+  int argc,
+  char * * argv ) {
+    exec sql begin declare section;
+    char ver[256];
+    exec sql end declare section;
+    fprintf(stderr, "d: %d\n", getpid());
+    ECPGdebug(1, stderr);
+    exec sql whenever sqlerror do error_exit();
+    exec sql connect to "tcp:postgresql://192.168.1.15:5434/postgres" user knaka;
+    signal(SIGALRM, handler);
+    alarm(5);
+    exec sql begin;
+    exec sql select version() into :ver;
+    exec sql lock foo;
+    //sleep(20);
+    exec sql end;
+    exec sql disconnect all;
+    return (0);
+}
