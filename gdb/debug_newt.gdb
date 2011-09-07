@@ -22,7 +22,7 @@ end
 break newt.c:main
 
 command 1
-  # Ãí°Õ¡¢¤¹¤´¤¤ÎÌ
+  # æ³¨æ„ã€ã™ã”ã„é‡
   #info variables
   echo *** cp0\n
   show language
